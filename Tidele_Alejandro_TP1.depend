@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1535741866 source:c:\users\atidele\documents\utn\frgp\tsp\lab ii\tidele_alejandro_tp1\main.cpp
+	<iostream>
+	<cstdlib>
+	"Controllers/MainController.h"
+
+1535734744 c:\users\atidele\documents\utn\frgp\tsp\lab ii\tidele_alejandro_tp1\csystem\csystem.h
+	<iostream>
+	<cstdlib>
+	<cstdio>
+	<ctime>
+	<windows.h>
+	<unistd.h>
+
+1535741895 c:\users\atidele\documents\utn\frgp\tsp\lab ii\tidele_alejandro_tp1\controllers\maincontroller.h
+	<iostream>
+	"../CSYSTEM/csystem.h"
+	"../config.h"
+
+1535737830 c:\users\atidele\documents\utn\frgp\tsp\lab ii\tidele_alejandro_tp1\config.h
+
