@@ -44,9 +44,14 @@ AYUDANTE : Fernando Calabuig.
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="CSYSTEM/csystem.h" />
+		<Unit filename="Controllers/ConfigurationController.h" />
+		<Unit filename="Controllers/FreelancerController.h" />
 		<Unit filename="Controllers/MainController.h" />
+		<Unit filename="Controllers/SchedulerController.h" />
 		<Unit filename="LICENCIA GPL/Licencia GPL (traduccion NO OFICIAL - castellano argentina).txt" />
 		<Unit filename="LICENCIA GPL/Licencia GPL original (ingles).txt" />
+		<Unit filename="Rules/ConfigurationRules.h" />
+		<Unit filename="Rules/MainRules.h" />
 		<Unit filename="config.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

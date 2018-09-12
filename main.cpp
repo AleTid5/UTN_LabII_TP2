@@ -63,26 +63,27 @@
 //=============================================================================
 #include <iostream> // Libreria de flujos de  Entrada/Salida  que contiene  los
                     // objetos cin, cout y endl.
-
+#include <iomanip>  // Librería de manipulacion de textos.
 #include <cstdlib>  // Libreria estandar que contiene la funcion exit().
 
 //*****************************************************************************
 //                             INCLUSIONES PERSONALES
 //=============================================================================
 #include "Controllers/MainController.h" // Control del flujo principal.
+#include "Controllers/ConfigurationController.h" // Control del flujo principal.
 //==============================================================================
 // DECLARACION DEL ESPACIO DE NOMBRES POR DEFECTO
 //------------------------------------------------------------------------------
 using namespace std;
-
 
 //==============================================================================
 // FUNCION PRINCIPAL - PUNTO DE INICIO DEL PROYECTO
 //------------------------------------------------------------------------------
 int main()
 {
-    Main::welcome();
+    //Main::welcome();
     Main::menu();
+    Main::index();
     //--------------------------------------------------------------------------
     // FIN DE LA FUNCION main() SIN ERRORES.
     //--------------------------------------------------------------------------

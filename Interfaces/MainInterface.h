@@ -1,0 +1,6 @@
+#ifndef MAININTERFACE_H_INCLUDED
+#define MAININTERFACE_H_INCLUDED
+
+void dispatcher();
+
+#endif // MAININTERFACE_H_INCLUDED
