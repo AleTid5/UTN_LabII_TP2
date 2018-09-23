@@ -49,14 +49,14 @@ void modifyDataMenu()
     cout << endl;
     divider(70);
     divider(70, true);
-    const char* title = "M O D I F I C A R  F R E E L A N C E R";
+    const char* title = "M O D I F I C A R  C A T E G O R I A";
     int sizeOfTitle = strlen(title);
     buildMenu(title, true, sizeOfTitle, "green");
     divider(70, true);
     divider(70);
     divider(70, true);
-    buildMenu("1. Modificar Freelancer por ID.", false, sizeOfTitle, "green");
-    buildMenu("2. Modificar Freelancer por Tipo.", false, sizeOfTitle, "green");
+    buildMenu("1. Modificar categoria por ID.", false, sizeOfTitle, "green");
+    buildMenu("2. Modificar categoria por tipo.", false, sizeOfTitle, "green");
     buildMenu("3. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
