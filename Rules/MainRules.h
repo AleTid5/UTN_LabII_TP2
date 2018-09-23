@@ -1,9 +1,10 @@
 #ifndef MAINRULES_H_INCLUDED
 #define MAINRULES_H_INCLUDED
+
 #include <string>      // Librería String
 #include "../config.h" // Configuraciones del sistema.
 
-namespace MainRule
+namespace Rule
 {
     bool validEntry(unsigned int maxLength)
     {

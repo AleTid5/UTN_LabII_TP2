@@ -5,9 +5,10 @@
 using namespace std;
 
 typedef char char1[1], char12[12], char25[25];
-const char* mainOptions = "123";
-const char* configOptions = "1234";
+const char* threeOptions = "123";
+const char* fourOptions = "1234";
 unsigned int maxOptionLength = 1;
+unsigned const int maxPagination = 5;
 char1 entry;
 char12 currentDate = {0};
 unsigned const char Text_Center[4] = "\t\t";
@@ -52,7 +53,7 @@ void positionate(auto structure, unsigned int position, unsigned int times = 0)
     }
 }
 
-void setCurrentDate() {
+void setCurrentDate() { //Singleton de fecha del dia.
     if (currentDate[0] != '\0')
         return;
 
@@ -64,34 +65,83 @@ void setCurrentDate() {
     strcpy(currentDate, buf);
 }
 
-int strFind(auto haystack, auto needle)
+bool strFind(auto haystack, auto needle)
 {
     int haystackLenght = strlen(haystack);
     int needleLenght = strlen(needle);
 
     if (needleLenght > haystackLenght)
-        return -1;
-
-    int position = -1;
+        return false;
 
     for (int i = 0; i < haystackLenght; i++)
-        if (haystack[i] == needle[0])
+        if (toupper((int) haystack[i]) == toupper((int) needle[0]))
         {
-            position = i;
             int aux = i, cont = 0;
 
             for(int j = 0; j < needleLenght; j++, aux++)
-                if (haystack[aux] == needle[j])
+                if (toupper((int) haystack[aux]) == toupper((int) needle[j]))
                     cont++;
 
             if (cont == needleLenght)
-                return position;
-
-            position = -1;
+                return true;
         }
 
-    return position;
+    return false;
 }
 
+void divider(unsigned int i, bool headerDivider = false)
+{
+    cout << Text_Center;
+
+    if (headerDivider) {
+        cout << "같";
+        for (i -= 4; i > 0; i--)
+            cout << " ";
+        cout << "같";
+    } else {
+        for (; i > 0; i--)
+            cout << "�";
+    }
+
+    cout << endl;
+}
+
+const char* getColorCodeByColorName(const char* colorName) {
+    if (! (bool) strcmp("black", colorName))    return "\033[1;30m";
+    if (! (bool) strcmp("red", colorName))      return "\033[1;31m";
+    if (! (bool) strcmp("green", colorName))    return "\033[1;32m";
+    if (! (bool) strcmp("yellow", colorName))   return "\033[1;33m";
+    if (! (bool) strcmp("blue", colorName))     return "\033[1;34m";
+    if (! (bool) strcmp("magenta", colorName))  return "\033[1;35m";
+    if (! (bool) strcmp("cyan", colorName))     return "\033[1;36m";
+
+    return "\033[1;37m";
+}
+
+void buildMenu(const char* header, bool isTitle, int sizeOfTitle, const char* colorName = "white")
+{
+   int startWrite = (isTitle ? 31 : 33) - (sizeOfTitle / 2), endWrite = startWrite + strlen(header), position = 0;
+
+   cout << Text_Center << "같";
+
+   if (isTitle) cout << "같";
+
+   cout << getColorCodeByColorName(colorName);
+
+   for (int i = 0; i < (isTitle ? 62 : 66); i++) {
+        if (i > startWrite && i <= endWrite) {
+            cout << header[position];
+            position++;
+        } else {
+            cout << " ";
+        }
+   }
+
+   cout << "\033[0m같";
+
+   if (isTitle) cout << "같";
+
+   cout << endl;
+}
 
 #endif // CONFIG_H_INCLUDED

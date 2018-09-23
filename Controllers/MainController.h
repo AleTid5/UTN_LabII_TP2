@@ -48,17 +48,20 @@ void menu()
 {
     sys::cls();
     cout << endl;
-    cout << Text_Center << "같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같" << endl;
-    cout << Text_Center << "같                                                                  같" << endl;
-    cout << Text_Center << "같같                 M E N U   P R I N C I P A L                  같같" << endl;
-    cout << Text_Center << "같                                                                  같" << endl;
-    cout << Text_Center << "같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같" << endl;
-    cout << Text_Center << "같                                                                  같" << endl;
-    cout << Text_Center << "같                 1. Configuracion de precio/hora.                 같" << endl;
-    cout << Text_Center << "같                 2. ABM de freelancers.                           같" << endl;
-    cout << Text_Center << "같                 3. Carga de horas a los freelancers.             같" << endl;
-    cout << Text_Center << "같                                                                  같" << endl;
-    cout << Text_Center << "같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같같" << endl;
+    divider(70);
+    divider(70, true);
+    const char* title = "M E N U   P R I N C I P A L";
+    int sizeOfTitle = strlen(title);
+    buildMenu(title, true, sizeOfTitle);
+    divider(70, true);
+    divider(70);
+    divider(70, true);
+    buildMenu("1. Configuracion de precio/hora.", false, sizeOfTitle, "green");
+    buildMenu("2. ABM de freelancers.", false, sizeOfTitle, "blue");
+    buildMenu("3. Carga de horas a los freelancers.", false, sizeOfTitle, "magenta");
+    buildMenu("4. Salir.", false, sizeOfTitle, "red");
+    divider(70, true);
+    divider(70);
 }
 
 void retry()
@@ -75,11 +78,18 @@ void dispatch()
         Configuration::menu();
         Configuration::index();
     }
-    if (entry[0] == '2')
-        cout << "asdw";
+
+    if (entry[0] == '2') {
+        //loading(25, 50);
+        Freelancer::menu();
+        Freelancer::index();
+    }
 
     if (entry[0] == '3')
         cout << "asd1";
+
+    if (entry[0] == '4')
+        return;
 }
 
 void index()
@@ -89,7 +99,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! MainRule::validEntry(maxOptionLength) || ! MainRule::validEntry(mainOptions))
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions))
     {
         retry();
     }
