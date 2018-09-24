@@ -53,7 +53,7 @@ void positionate(auto structure, unsigned int position, unsigned int times = 0)
     }
 }
 
-void setCurrentDate() { //Singleton de fecha del dia.
+void setCurrentDate() { // Singleton de fecha del dia.
     if (currentDate[0] != '\0')
         return;
 

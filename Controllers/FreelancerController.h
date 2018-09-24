@@ -2,19 +2,22 @@
 #define FREELANCERCONTROLLER_H_INCLUDED
 
 #include "../Rules/MainRules.h"
-#include "ConfigurationController.h"
 
 namespace Freelancer
 {
+
 struct freelancer
 {
     unsigned int dni;
     char25 name;
     char25 lastname;
     char25 type;
+    unsigned int workedTime = 0;
     char12 registrationDate;
-    char12 modificationDate;
+    char12 modificationDate = "Sin cambios";
 } _freelancer;
+
+int paginatorFrom = 0, paginatorTo = maxPagination;
 
 /****************************************
 * Prototipos del Configurador de Cobro. *
@@ -36,7 +39,7 @@ void menu()
     divider(70, true);
     buildMenu("1. Agregar freelancer.", false, sizeOfTitle, "blue");
     buildMenu("2. Modificar freelancer.", false, sizeOfTitle, "blue");
-    buildMenu("3. Buscar freelancers.", false, sizeOfTitle, "blue");
+    buildMenu("3. Ver tabla de freelancers.", false, sizeOfTitle, "blue");
     buildMenu("4. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
@@ -54,9 +57,9 @@ void modifyDataMenu()
     divider(70, true);
     divider(70);
     divider(70, true);
-    buildMenu("1. Buscar freelancer por DNI.", false, sizeOfTitle, "blue");
-    buildMenu("2. Buscar freelancer por Nombre.", false, sizeOfTitle, "blue");
-    buildMenu("3. Buscar freelancer por Apellido.", false, sizeOfTitle, "blue");
+    buildMenu("1. Modificar Freelancer por DNI.", false, sizeOfTitle, "blue");
+    buildMenu("2. Modificar Freelancer por Nombre.", false, sizeOfTitle, "blue");
+    buildMenu("3. Modificar Freelancer por Apellido.", false, sizeOfTitle, "blue");
     buildMenu("4. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
@@ -68,48 +71,104 @@ void backToMain()
     Main::index();
 }
 
-void findFreelancer()
+int getMaxPages()
+{
+    file = fopen ("Bin/freelancer.b","rb");
+    fseek(file, 0, 2);
+    unsigned int sizeOfRegisters = ftell(file) / sizeof(_freelancer);
+    fclose(file);
+
+    return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
+}
+
+void showTable()
 {
     sys::cls();
 
     file = fopen ("Bin/freelancer.b","rb");
 
     cout << endl << endl;
-    divider(87);
+    divider(145);
 
     if (file == NULL) {
-        cout << Text_Center << "° " << setw(55) << right << "No hay datos cargados aun " << setw(30) << right << "°" << endl;
+        fclose(file);
+        cout << Text_Center << "° " << setw(85) << right << "No hay datos cargados aun " << setw(58) << right << "°" << endl;
+        divider(145);
+
+        sys::getch();
+
+        menu();
+        index();
     } else {
         cout << Text_Center
-                 << "° "  << setw(10) << left << "ID"
-                 << " ° " << setw(25) << left << "TIPO"
-                 << " ° " << setw(13) << left << "VALOR POR HORA"
-                 << " ° " << setw(10) << left << "FECHA ALTA"
-                 << " ° " << setw(12) << left << "MODIFICACION"
-                 << " °"  << endl;
-        divider(87);
+             << "° "  << setw(10) << left << "DNI"
+             << " ° " << setw(25) << left << "Nombre"
+             << " ° " << setw(25) << left << "Apellido"
+             << " ° " << setw(16) << left << "Horas trabajadas"
+             << " ° " << setw(25) << left << "Tipo"
+             << " ° " << setw(10) << left << "FECHA ALTA"
+             << " ° " << setw(12) << left << "MODIFICACION"
+             << " °"  << endl;
+        divider(145);
 
         fseek (file, 0, 0);
         fread(&_freelancer, sizeof(_freelancer), 1, file);
-        for (; ! feof(file);) {
-            cout << Text_Center
-                 << "° "   << setw(10) << left << _freelancer.dni
-                 << " ° "  << setw(25) << left << _freelancer.type
-                 << " ° "  << setw(10) << left << _freelancer.registrationDate
-                 << " ° "  << setw(12) << left << _freelancer.modificationDate
-                 << " °"   << endl;
+        for (int i = 0;! feof(file); i++) {
+            if (i >= paginatorFrom && i < paginatorTo) {
+                cout << Text_Center
+                    << "° "   << setw(10) << left << _freelancer.dni
+                    << " ° "  << setw(25) << left << _freelancer.name
+                    << " ° "  << setw(25) << left << _freelancer.lastname
+                    << " ° "  << setw(16) << left << _freelancer.workedTime
+                    << " ° "  << setw(25) << left << _freelancer.type
+                    << " ° "  << setw(10) << left << _freelancer.registrationDate
+                    << " ° "  << setw(12) << left << _freelancer.modificationDate
+                    << " °"   << endl;
+            }
+
             fread(&_freelancer, sizeof(_freelancer), 1, file);
         }
     }
 
-    divider(87);
-    cout << endl;
-    cout << Text_Center << "Presione Enter para volver..";
-
     fclose(file);
-    sys::getch();
-    menu();
-    index();
+
+    unsigned int pages = getMaxPages();
+    divider(145);
+    divider(145, true);
+
+    cout << Text_Center <<  "°° Pagina ";
+
+    for (unsigned int i = 0; i < pages; i++) {
+        if ((paginatorFrom + maxPagination) / maxPagination == i + 1) cout << "\033[1;32m";
+        cout << "| " << i + 1 << " ";
+        if ((paginatorFrom + maxPagination) / maxPagination == i + 1) cout << "\033[0m";
+    }
+
+    cout << setw(135 - (pages * 4) - (pages >= 10 ? pages - 9 : 0)) << right << "°°" << endl;
+
+    divider(145, true);
+    divider(145);
+
+    cout << Text_Center << "Seleccione la pagina que desea ver o ingrese 0 para volver: ";
+    unsigned int page;
+
+    cin >> page;
+
+    while (! cin.good() || page > pages) {
+        cin.clear();
+        cin.ignore(9, '\n');
+        cout << Text_Center << "\033[1;31mIngrese una pagina valida: \033[0m";
+        cin >> page;
+    }
+
+    if (page != 0) {
+        paginatorFrom = (page * maxPagination) - maxPagination;
+        paginatorTo = paginatorFrom + maxPagination;
+        showTable();
+    } else {
+        menu();
+        index();
+    }
 }
 
 void retry()
@@ -126,54 +185,128 @@ void retryModify()
     modifyData();
 }
 
-void addData()
+void setFreelancerName(char25 &name, unsigned int minLength = 3)
 {
-    unsigned int id = 1;
+    cin.getline(name, 25);
 
+    while (! cin.good() || strlen(name) > 25 || strlen(name) < minLength) {
+        cin.clear();
+        cout << Text_Center << "\033[1;31mIngrese un nombre/apellido valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cin.getline(name, 25);
+    }
+}
+
+bool typeExists()
+{
+    FILE* configFile = fopen ("Bin/configuration.b","rb");
+    Configuration::configuration _configAux;
+
+    bool typeFounded = false;
+
+    if (configFile == NULL) {
+        fclose(configFile);
+        return typeFounded;
+    }
+
+    fseek (configFile, 0, 0);
+    for (; ! feof(configFile) && ! typeFounded;) {
+        fread(&_configAux, sizeof(_configAux), 1, configFile);
+        if (! (bool) strcmp(_configAux.type,_freelancer.type))
+            typeFounded = ! typeFounded;
+    }
+
+    fclose(configFile);
+
+    return typeFounded;
+}
+
+void setFreelancerType(char25 &type, unsigned int minLength = 3)
+{
+    cin.getline(type, 25);
+
+    while (! cin.good() || strlen(type) > 25 || strlen(type) < minLength || ! typeExists()) {
+        cin.clear();
+        cout << Text_Center << "\033[1;31mIngrese un tipo valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
+        cin.getline(type, 25);
+    }
+
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+}
+
+bool freelancerExists()
+{
     file = fopen ("Bin/freelancer.b","rb");
+    freelancer _fAux;
 
-    if (file != NULL) {
-        positionate(_freelancer, 1);
-        fread(&_freelancer, sizeof(_freelancer), 1, file);
-        id = _freelancer.dni + 1;
+    bool freelancerFounded = false;
+
+    if (file == NULL) {
+        fclose(file);
+        return freelancerFounded;
+    }
+
+    fseek (file, 0, 0);
+    for (; ! feof(file) && ! freelancerFounded;) {
+        fread(&_fAux, sizeof(_fAux), 1, file);
+        if (_fAux.dni == _freelancer.dni)
+            freelancerFounded = ! freelancerFounded;
     }
 
     fclose(file);
 
-    char25 type;
-    int amount;
-    cin.ignore();
+    return freelancerFounded;
+}
+
+void setFreelancerDNI(unsigned int &dni)
+{
+    cin >> dni;
+
+    while (! cin.good() || freelancerExists()) {
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cout << Text_Center << "\033[1;31mEl DNI ingresado no es valido o ya existe. Ingreselo nuevamente: \033[0m";
+        cin >> dni;
+    }
+
+    //cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void validateDNI(unsigned int &dni)
+{
+    cin >> dni;
+
+    while (! cin.good()) {
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cout << Text_Center << "\033[1;31mIngrese un DNI valido: \033[0m";
+        cin >> dni;
+    }
+
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void addData()
+{
+    cout << Text_Center << "Ingrese el DNI del freelancer: ";
+    setFreelancerDNI(_freelancer.dni);
+
+    cout << Text_Center << "Ingrese el nombre del freelancer: ";
+    setFreelancerName(_freelancer.name);
+
+    cout << Text_Center << "Ingrese el apellido del freelancer: ";
+    setFreelancerName(_freelancer.lastname);
+
     cout << Text_Center << "Ingrese el tipo de freelancer: ";
-    cin >> type;
+    setFreelancerType(_freelancer.type);
 
-    while (! cin.good()) {
-        cin.clear();
-        cin.ignore(9, '\n');
-        cout << Text_Center << "\033[1;31mIngrese un tipo valido (Maximo 25 caracteres): \033[0m";
-        cin >> type;
-    }
-
-    cout << Text_Center << "Ingrese el monto que va a ganar por hora: ";
-    cin >> amount;
-    cin.ignore();
-
-    while (! cin.good()) {
-        cin.clear();
-        cin.ignore(9, '\n');
-        cout << Text_Center << "\033[1;31mIngrese un monto valido: \033[0m";
-        cin >> amount;
-    }
-
-    _freelancer.dni = id;
-    strcpy(_freelancer.type, type);
     strcpy(_freelancer.registrationDate, currentDate);
-    strcpy(_freelancer.modificationDate, "Sin cambios");
 
     file = fopen ("Bin/freelancer.b","ab+");
     fwrite(&_freelancer, sizeof(_freelancer), 1, file);
     fclose (file);
 
-    cout << Text_Center << "Desea cargar otro registro? (S/N) ";
+    cout << Text_Center << "Desea cargar otro freelancer? (S/N) ";
     cin >> entry;
 
     if (entry[0] == 'S' || entry[0] == 's') {
@@ -185,63 +318,59 @@ void addData()
     index();
 }
 
-void changeDataWithCount(unsigned int times)
+void modifyDataByPosition(unsigned int times)
 {
     modifyDataMenu();
-    cout << Text_Center << "Se ha encontrado el siguiente registro:" << endl;
+    cout << Text_Center << "Se ha encontrado el siguiente freelancer:" << endl;
     cout << Text_Center << "ID: " << _freelancer.dni << endl;
+    cout << Text_Center << "Nombre del Freelancer: " << _freelancer.name << endl;
+    cout << Text_Center << "Apellido del Freelancer: " << _freelancer.lastname << endl;
     cout << Text_Center << "Tipo de Freelancer: " << _freelancer.type << endl;
     cout << Text_Center << "Fecha de creacion: " << _freelancer.registrationDate << endl;
     cout << Text_Center << "Desea modificarlo? (S/N) ";
     cin >> entry;
-    cin.ignore();
+    cin.ignore(0, '\n');
 
     if (entry[0] == 'S' || entry[0] == 's') {
+        cout << Text_Center << "Desea modificar el nombre del freelancer? (S/N) ";
+        cin >> entry;
+
+        if (entry[0] == 'S' || entry[0] == 's') {
+            cin.ignore();
+            strcpy(_freelancer.modificationDate, currentDate);
+            cout << Text_Center << "Ingrese el nombre del freelancer: ";
+            setFreelancerName(_freelancer.name);
+        }
+
+        cout << Text_Center << "Desea modificar el apellido del freelancer? (S/N) ";
+        cin >> entry;
+        cin.ignore(0, '\n');
+
+        if (entry[0] == 'S' || entry[0] == 's') {
+            cin.ignore();
+            strcpy(_freelancer.modificationDate, currentDate);
+            cout << Text_Center << "Ingrese el apellido del freelancer: ";
+            setFreelancerName(_freelancer.lastname);
+        }
 
         cout << Text_Center << "Desea modificar el tipo de freelancer? (S/N) ";
         cin >> entry;
-        cin.ignore();
+        cin.ignore(0, '\n');
 
         if (entry[0] == 'S' || entry[0] == 's') {
-            char25 type;
-            cout << Text_Center << "Ingrese el tipo de freelancer: ";
-            cin >> type;
-
-            while (! cin.good()) {
-                cin.clear();
-                cin.ignore(9, '\n');
-                cout << Text_Center << "\033[1;31mIngrese un tipo valido (Maximo 25 caracteres): \033[0m";
-                cin >> type;
-            }
-
-             strcpy(_freelancer.type, type);
-             strcpy(_freelancer.modificationDate, currentDate);
-        }
-
-        cout << Text_Center << "Desea modificar el monto que va a ganar? (S/N) ";
-        cin >> entry;
-        cin.ignore();
-
-        if (entry[0] == 'S' || entry[0] == 's') {
-            int amount;
-            cout << Text_Center << "Ingrese el monto que va a ganar por hora: ";
-            cin >> amount;
             cin.ignore();
-
-            while (! cin.good()) {
-                cin.clear();
-                cin.ignore(9, '\n');
-                cout << Text_Center << "\033[1;31mIngrese un monto valido: \033[0m";
-                cin >> amount;
-            }
-
             strcpy(_freelancer.modificationDate, currentDate);
+            cout << Text_Center << "Ingrese el tipo de freelancer: ";
+            setFreelancerType(_freelancer.type);
         }
 
-        file = fopen ("Bin/freelancer.b","r+");
+        file = fopen ("Bin/freelancer.b","rb+");
         positionate(_freelancer, 2, times - 1);
         fwrite(&_freelancer, sizeof(_freelancer), 1, file);
         fclose (file);
+
+        cout << Text_Center << "\033[1;32mUsuario modificado exitosamente!\033[0m";
+        sys::getch();
     }
 }
 
@@ -253,44 +382,37 @@ void modifyData()
         fclose(file);
         cout << Text_Center << "\033[1;31mNo hay datos cargados aun.\033[0m";
         sys::getch();
-        backToMain();
+        menu();
+        index();
     }
 
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(threeOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
         fclose(file);
         retryModify();
     }
 
     if (entry[0] == '1') {
-        unsigned int id;
+        unsigned int dni;
 
-        cout << Text_Center << "Ingrese el ID del Freelancer: ";
-        cin >> id;
-        cin.ignore();
-
-        while (! cin.good()) {
-            cin.clear();
-            cin.ignore(9, '\n');
-            cout << Text_Center << "\033[1;31mIngrese un ID valido: \033[0m";
-            cin >> id;
-        }
+        cout << Text_Center << "Ingrese el DNI del Freelancer: ";
+        validateDNI(dni);
 
         fseek (file, 0, 0);
-        bool existsFreelancer = false;
-        for (unsigned int i = 1; ! feof(file) && ! existsFreelancer; i++) {
+        bool freelancerFounded = false;
+        for (unsigned int i = 1;! feof(file) && ! freelancerFounded; i++) {
             fread(&_freelancer, sizeof(_freelancer), 1, file);
-            if (_freelancer.dni == id) {
+            if (_freelancer.dni == dni) {
                 fclose(file);
-                changeDataWithCount(i);
-                existsFreelancer = true;
+                modifyDataByPosition(i);
+                freelancerFounded = true;
             }
         }
 
-        if (! existsFreelancer) {
-            cout << Text_Center << "\033[1;31mNo se ha encontrado el ID seleccionado.\033[0m";
+        if (! freelancerFounded) {
+            cout << Text_Center << "\033[1;31mNo se ha encontrado el DNI ingresado.\033[0m";
             sys::getch();
         }
 
@@ -300,32 +422,25 @@ void modifyData()
     }
 
     if (entry[0] == '2') {
-        char25 type;
+        char25 name;
 
-        cout << Text_Center << "Ingrese el Tipo del Freelancer: ";
-        cin >> type;
+        cout << Text_Center << "Ingrese el Nombre del Freelancer: ";
         cin.ignore();
-
-        while (! cin.good()) {
-            cin.clear();
-            cin.ignore(9, '\n');
-            cout << Text_Center << "\033[1;31mIngrese un Tipo valido: \033[0m";
-            cin >> type;
-        }
+        setFreelancerName(name, 0);
 
         fseek (file, 0, 0);
-        bool existsFreelancer = false;
-        for (unsigned int i = 1; ! feof(file) && ! existsFreelancer; i++) {
+        bool freelancerFounded = false;
+        for (unsigned int i = 1; ! feof(file) && ! freelancerFounded; i++) {
             fread(&_freelancer, sizeof(_freelancer), 1, file);
-            if (strFind(_freelancer.type, type)) {
+            if (strFind(_freelancer.name, name)) {
                 fclose(file);
-                changeDataWithCount(i);
-                existsFreelancer = true;
+                modifyDataByPosition(i);
+                freelancerFounded = true;
             }
         }
 
-        if (! existsFreelancer) {
-            cout << Text_Center << "\033[1;31mNo se ha encontrado el Tipo seleccionado.\033[0m";
+        if (! freelancerFounded) {
+            cout << Text_Center << "\033[1;31mNo se ha encontrado el nombre ingresado.\033[0m";
             sys::getch();
         }
 
@@ -335,6 +450,34 @@ void modifyData()
     }
 
     if (entry[0] == '3') {
+        cin.ignore();
+        char25 lastname;
+
+        cout << Text_Center << "Ingrese el Apellido del Freelancer: ";
+        setFreelancerName(lastname, 0);
+
+        fseek (file, 0, 0);
+        bool freelancerFounded = false;
+        for (unsigned int i = 1; ! feof(file) && ! freelancerFounded; i++) {
+            fread(&_freelancer, sizeof(_freelancer), 1, file);
+            if (strFind(_freelancer.lastname, lastname)) {
+                fclose(file);
+                modifyDataByPosition(i);
+                freelancerFounded = true;
+            }
+        }
+
+        if (! freelancerFounded) {
+            cout << Text_Center << "\033[1;31mNo se ha encontrado el Apellido ingresado.\033[0m";
+            sys::getch();
+        }
+
+        fclose(file);
+        modifyDataMenu();
+        modifyData();
+    }
+
+    if (entry[0] == '4') {
         //loading(25, 50);
         menu();
         index();
@@ -353,7 +496,7 @@ void dispatch()
     }
 
     if (entry[0] == '3')
-        findFreelancer();
+        showTable();
 
     if (entry[0] == '4')
         backToMain();

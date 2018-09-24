@@ -231,7 +231,7 @@ void addData()
     fwrite(&_configuration, sizeof(_configuration), 1, file);
     fclose (file);
 
-    cout << Text_Center << "Desea cargar otro registro? (S/N) ";
+    cout << Text_Center << "Desea cargar otra categoria? (S/N) ";
     cin >> entry;
 
     if (entry[0] == 'S' || entry[0] == 's') {
@@ -246,7 +246,7 @@ void addData()
 void modifyDataByPosition(unsigned int times)
 {
     modifyDataMenu();
-    cout << Text_Center << "Se ha encontrado el siguiente registro:" << endl;
+    cout << Text_Center << "Se ha encontrado la siguiente categoria:" << endl;
     cout << Text_Center << "ID: " << _configuration.id << endl;
     cout << Text_Center << "Tipo de Freelancer: " << _configuration.type << endl;
     cout << Text_Center << "Monto que percibe: $" << _configuration.amount << endl;
@@ -280,6 +280,9 @@ void modifyDataByPosition(unsigned int times)
         positionate(_configuration, 2, times - 1);
         fwrite(&_configuration, sizeof(_configuration), 1, file);
         fclose (file);
+
+        cout << Text_Center << "\033[1;32mCategoria modificada exitosamente!\033[0m";
+        sys::getch();
     }
 }
 
@@ -316,7 +319,7 @@ void modifyData()
             if (_configuration.id == id) {
                 fclose(file);
                 modifyDataByPosition(i);
-                freelancerFounded = 1;
+                freelancerFounded = true;
             }
         }
 
