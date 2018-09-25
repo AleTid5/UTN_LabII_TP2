@@ -85,8 +85,11 @@ void dispatch()
         Freelancer::index();
     }
 
-    if (entry[0] == '3')
-        cout << "asd1";
+    if (entry[0] == '3') {
+         //loading(25, 50);
+        Scheduler::menu();
+        Scheduler::index();
+    }
 
     if (entry[0] == '4')
         return;

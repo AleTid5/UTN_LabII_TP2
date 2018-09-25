@@ -185,19 +185,22 @@ void retryModify()
     modifyData();
 }
 
-void setFreelancerName(char25 &name, unsigned int minLength = 3)
+void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
 {
-    cin.getline(name, 25);
+    char name[1000];
+    cin.getline(name, 1000);
 
     while (! cin.good() || strlen(name) > 25 || strlen(name) < minLength) {
         cin.clear();
         cout << Text_Center << "\033[1;31mIngrese un nombre/apellido valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
-        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-        cin.getline(name, 25);
+        //cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cin.getline(name, 1000);
     }
+
+    strcpy(nameReal, name);
 }
 
-bool typeExists()
+bool typeExists(char type[1000])
 {
     FILE* configFile = fopen ("Bin/configuration.b","rb");
     Configuration::configuration _configAux;
@@ -212,7 +215,7 @@ bool typeExists()
     fseek (configFile, 0, 0);
     for (; ! feof(configFile) && ! typeFounded;) {
         fread(&_configAux, sizeof(_configAux), 1, configFile);
-        if (! (bool) strcmp(_configAux.type,_freelancer.type))
+        if (! (bool) strcmp(_configAux.type,type))
             typeFounded = ! typeFounded;
     }
 
@@ -221,17 +224,18 @@ bool typeExists()
     return typeFounded;
 }
 
-void setFreelancerType(char25 &type, unsigned int minLength = 3)
+void setFreelancerType(char25 &typeReal, unsigned int minLength = 3)
 {
-    cin.getline(type, 25);
+    char type[1000];
+    cin.getline(type, 1000);
 
-    while (! cin.good() || strlen(type) > 25 || strlen(type) < minLength || ! typeExists()) {
+    while (! typeExists(type)) {
         cin.clear();
         cout << Text_Center << "\033[1;31mIngrese un tipo valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
-        cin.getline(type, 25);
+        cin.getline(type, 1000);
     }
 
-    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    strcpy(typeReal, type);
 }
 
 bool freelancerExists()
@@ -292,6 +296,7 @@ void addData()
     setFreelancerDNI(_freelancer.dni);
 
     cout << Text_Center << "Ingrese el nombre del freelancer: ";
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
     setFreelancerName(_freelancer.name);
 
     cout << Text_Center << "Ingrese el apellido del freelancer: ";
