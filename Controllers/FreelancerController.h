@@ -24,6 +24,7 @@ int paginatorFrom = 0, paginatorTo = maxPagination;
 ****************************************/
 void index();
 void modifyData();
+void searchFreelancers();
 
 void menu()
 {
@@ -65,6 +66,25 @@ void modifyDataMenu()
     divider(70);
 }
 
+void searchFreelancersMenu()
+{
+    sys::cls();
+    cout << endl;
+    divider(70);
+    divider(70, true);
+    const char* title = "B U S C A D O R  D E  F R E E L A N C E R S";
+    int sizeOfTitle = strlen(title);
+    buildMenu(title, true, sizeOfTitle, "blue");
+    divider(70, true);
+    divider(70);
+    divider(70, true);
+    buildMenu("1. Ver todos los freelancers.", false, sizeOfTitle, "blue");
+    buildMenu("2. Buscar freelancer por nombre o apellido.", false, sizeOfTitle, "blue");
+    buildMenu("3. Volver.", false, sizeOfTitle, "red");
+    divider(70, true);
+    divider(70);
+}
+
 void backToMain()
 {
     Main::menu();
@@ -76,6 +96,21 @@ int getMaxPages()
     file = fopen ("Bin/freelancer.b","rb");
     fseek(file, 0, 2);
     unsigned int sizeOfRegisters = ftell(file) / sizeof(_freelancer);
+    fclose(file);
+
+    return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
+}
+
+int getMaxPagesByFilter(char25 filter)
+{
+    file = fopen ("Bin/freelancer.b","rb");
+    fseek(file, 0, 0);
+    unsigned int sizeOfRegisters = 0;
+    for (;! feof(file);) {
+        fread(&_freelancer, sizeof(_freelancer), 1, file);
+        if (strFind(_freelancer.name, filter) || strFind(_freelancer.lastname, filter))
+            sizeOfRegisters++;
+    }
     fclose(file);
 
     return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
@@ -166,8 +201,102 @@ void showTable()
         paginatorTo = paginatorFrom + maxPagination;
         showTable();
     } else {
+        searchFreelancersMenu();
+        searchFreelancers();
+    }
+}
+
+void showTableByFilter(char25 filter)
+{
+    sys::cls();
+
+    file = fopen ("Bin/freelancer.b","rb");
+
+    cout << endl << endl;
+    divider(145);
+
+    if (file == NULL) {
+        fclose(file);
+        cout << Text_Center << "° " << setw(85) << right << "No hay datos cargados aun " << setw(58) << right << "°" << endl;
+        divider(145);
+
+        sys::getch();
+
         menu();
         index();
+    } else {
+        cout << Text_Center
+             << "° "  << setw(10) << left << "DNI"
+             << " ° " << setw(25) << left << "Nombre"
+             << " ° " << setw(25) << left << "Apellido"
+             << " ° " << setw(16) << left << "Horas trabajadas"
+             << " ° " << setw(25) << left << "Tipo"
+             << " ° " << setw(10) << left << "FECHA ALTA"
+             << " ° " << setw(12) << left << "MODIFICACION"
+             << " °"  << endl;
+        divider(145);
+
+        fseek (file, 0, 0);
+        fread(&_freelancer, sizeof(_freelancer), 1, file);
+        for (int i = 0;! feof(file); i++) {
+            if (strFind(_freelancer.name, filter) || strFind(_freelancer.lastname, filter)) {
+                if (i >= paginatorFrom && i < paginatorTo)
+                    cout << Text_Center
+                        << "° "   << setw(10) << left << _freelancer.dni
+                        << " ° "  << setw(25) << left << _freelancer.name
+                        << " ° "  << setw(25) << left << _freelancer.lastname
+                        << " ° "  << setw(16) << left << _freelancer.workedTime
+                        << " ° "  << setw(25) << left << _freelancer.type
+                        << " ° "  << setw(10) << left << _freelancer.registrationDate
+                        << " ° "  << setw(12) << left << _freelancer.modificationDate
+                        << " °"   << endl;
+
+            } else {
+                i--;
+            }
+
+            fread(&_freelancer, sizeof(_freelancer), 1, file);
+        }
+    }
+
+    fclose(file);
+
+    unsigned int pages = getMaxPagesByFilter(filter);
+    divider(145);
+    divider(145, true);
+
+    cout << Text_Center <<  "°° Pagina ";
+
+    for (unsigned int i = 0; i < pages; i++) {
+        if ((paginatorFrom + maxPagination) / maxPagination == i + 1) cout << "\033[1;32m";
+        cout << "| " << i + 1 << " ";
+        if ((paginatorFrom + maxPagination) / maxPagination == i + 1) cout << "\033[0m";
+    }
+
+    cout << setw(135 - (pages * 4) - (pages >= 10 ? pages - 9 : 0)) << right << "°°" << endl;
+
+    divider(145, true);
+    divider(145);
+
+    cout << Text_Center << "Seleccione la pagina que desea ver o ingrese 0 para volver: ";
+    unsigned int page;
+
+    cin >> page;
+
+    while (! cin.good() || page > pages) {
+        cin.clear();
+        cin.ignore(9, '\n');
+        cout << Text_Center << "\033[1;31mIngrese una pagina valida: \033[0m";
+        cin >> page;
+    }
+
+    if (page != 0) {
+        paginatorFrom = (page * maxPagination) - maxPagination;
+        paginatorTo = paginatorFrom + maxPagination;
+        showTableByFilter(filter);
+    } else {
+        searchFreelancersMenu();
+        searchFreelancers();
     }
 }
 
@@ -185,6 +314,13 @@ void retryModify()
     modifyData();
 }
 
+void retrySearch()
+{
+    searchFreelancersMenu();
+    showErrorFooter();
+    searchFreelancers();
+}
+
 void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
 {
     char name[1000];
@@ -193,7 +329,6 @@ void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
     while (! cin.good() || strlen(name) > 25 || strlen(name) < minLength) {
         cin.clear();
         cout << Text_Center << "\033[1;31mIngrese un nombre/apellido valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
-        //cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         cin.getline(name, 1000);
     }
 
@@ -272,8 +407,6 @@ void setFreelancerDNI(unsigned int &dni)
         cout << Text_Center << "\033[1;31mEl DNI ingresado no es valido o ya existe. Ingreselo nuevamente: \033[0m";
         cin >> dni;
     }
-
-    //cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
 }
 
 void validateDNI(unsigned int &dni)
@@ -490,6 +623,66 @@ void modifyData()
 
 }
 
+void setFilter(char25 &filter)
+{
+    char filterAux[1000];
+    cin.ignore(0, '\n');
+    cin.getline(filterAux, 1000);
+
+    while (! cin.good() || strlen(filterAux) > 25 || strlen(filterAux) == 0) {
+        cin.clear();
+        cout << Text_Center << "\033[1;31mIngrese un nombre/apellido valido (1 - 25 caracteres): \033[0m";
+        cin.getline(filterAux, 1000);
+    }
+
+    strcpy(filter, filterAux);
+}
+
+void searchFreelancers()
+{
+    file = fopen ("Bin/freelancer.b","rb");
+
+    if (file == NULL) {
+        fclose(file);
+        cout << Text_Center << "\033[1;31mNo hay datos cargados aun.\033[0m";
+        sys::getch();
+        menu();
+        index();
+    }
+
+    fclose(file);
+
+    cout << Text_Center << "Seleccione una opcion para operar: ";
+    cin >> entry;
+
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(threeOptions)) {
+        fclose(file);
+        retrySearch();
+    }
+
+    if (entry[0] == '1') {
+        paginatorFrom = 0;
+        paginatorTo = maxPagination;
+        showTable();
+    }
+
+    if (entry[0] == '2') {
+        paginatorFrom = 0;
+        paginatorTo = maxPagination;
+        char25 filter;
+        cout << Text_Center << "Ingrese el filtro a buscar: ";
+        cin.ignore();
+        setFilter(filter);
+        showTableByFilter(filter);
+    }
+
+    if (entry[0] == '3') {
+        //loading(25, 50);
+        menu();
+        index();
+    }
+}
+
 void dispatch()
 {
     if (entry[0] == '1')
@@ -500,8 +693,10 @@ void dispatch()
         modifyData();
     }
 
-    if (entry[0] == '3')
-        showTable();
+    if (entry[0] == '3') {
+        searchFreelancersMenu();
+        searchFreelancers();
+    }
 
     if (entry[0] == '4')
         backToMain();

@@ -56,10 +56,11 @@ void menu()
     divider(70, true);
     divider(70);
     divider(70, true);
-    buildMenu("1. Configuracion de precio/hora.", false, sizeOfTitle, "green");
-    buildMenu("2. ABM de freelancers.", false, sizeOfTitle, "blue");
+    buildMenu("1. Configuracion de categorias.", false, sizeOfTitle, "green");
+    buildMenu("2. Configuracion de freelancers.", false, sizeOfTitle, "blue");
     buildMenu("3. Carga de horas a los freelancers.", false, sizeOfTitle, "magenta");
-    buildMenu("4. Salir.", false, sizeOfTitle, "red");
+    buildMenu("4. Reportes.", false, sizeOfTitle, "yellow");
+    buildMenu("5. Salir.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
 }
