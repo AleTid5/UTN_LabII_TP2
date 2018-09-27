@@ -118,9 +118,9 @@ const char* getColorCodeByColorName(const char* colorName) {
     return "\033[1;37m";
 }
 
-void buildMenu(const char* header, bool isTitle, int sizeOfTitle, const char* colorName = "white")
+void buildMenu(const char* header, bool isTitle, int sizeOfTitle, const char* colorName = "white", int length = 70)
 {
-   int startWrite = (isTitle ? 31 : 33) - (sizeOfTitle / 2), endWrite = startWrite + strlen(header), position = 0;
+   int startWrite = (isTitle ? ((length/2) - 4) : ((length/2) - 2)) - (sizeOfTitle / 2), endWrite = startWrite + strlen(header), position = 0;
 
    cout << Text_Center << "°°";
 
@@ -128,7 +128,7 @@ void buildMenu(const char* header, bool isTitle, int sizeOfTitle, const char* co
 
    cout << getColorCodeByColorName(colorName);
 
-   for (int i = 0; i < (isTitle ? 62 : 66); i++) {
+   for (int i = 0; i < (isTitle ? (length - 8) : (length - 4)); i++) {
         if (i > startWrite && i <= endWrite) {
             cout << header[position];
             position++;

@@ -17,12 +17,6 @@ struct configuration
 
 int paginatorFrom = 0, paginatorTo = maxPagination;
 
-/****************************************
-* Prototipos del Configurador de Cobro. *
-****************************************/
-void index();
-void modifyData();
-
 void menu()
 {
     sys::cls();

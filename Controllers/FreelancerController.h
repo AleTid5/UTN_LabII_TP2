@@ -19,13 +19,6 @@ struct freelancer
 
 int paginatorFrom = 0, paginatorTo = maxPagination;
 
-/****************************************
-* Prototipos del Configurador de Cobro. *
-****************************************/
-void index();
-void modifyData();
-void searchFreelancers();
-
 void menu()
 {
     sys::cls();

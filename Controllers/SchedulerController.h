@@ -6,11 +6,6 @@
 namespace Scheduler
 {
 
-/****************************************
-* Prototipos del Configurador de Cobro. *
-****************************************/
-void index();
-
 void menu()
 {
     sys::cls();
@@ -47,7 +42,7 @@ void showFreelancer(Freelancer::freelancer _freelancer, bool allFreelancers = tr
         const char* title = "C A R G A R  H O R A S  A  T O D O S";
         buildMenu(title, true, strlen(title), "magenta");
     } else {
-        const char* title = "C A R G A R  H O R A S  A  T O D O S";
+        const char* title = "C A R G A R  H O R A S  A  E M P L E A D O";
         buildMenu(title, true, strlen(title), "magenta");
     }
 
@@ -95,7 +90,7 @@ void setDNI(unsigned int &dni)
 void successUpdate()
 {
     cout << Text_Center << "\033[1;32mHoras cargadas exitosamente!\033[0m";
-    sys::getch();
+    cin.ignore();
 }
 
 void modifyData(bool allUsers = true)
@@ -123,6 +118,7 @@ void modifyData(bool allUsers = true)
             setWorkedTime(_freelancer);
             positionate(_freelancer, 2, i);
             fwrite(&_freelancer, sizeof(_freelancer), 1, file);
+            positionate(_freelancer, 2, i + 1);
             successUpdate();
         }
     } else {
@@ -134,7 +130,7 @@ void modifyData(bool allUsers = true)
         for (unsigned int i = 0; i < (sizeOfFile / sizeOfFreelancer) && ! founded; i++) {
             fread(&_freelancer, sizeof(_freelancer), 1, file);
             if (_freelancer.dni == dni) {
-                showFreelancer(_freelancer);
+                showFreelancer(_freelancer, false);
                 setWorkedTime(_freelancer);
                 positionate(_freelancer, 2, i);
                 fwrite(&_freelancer, sizeof(_freelancer), 1, file);

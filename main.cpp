@@ -69,8 +69,14 @@
 //*****************************************************************************
 //                             INCLUSIONES PERSONALES
 //=============================================================================
+#include "CSYSTEM/csystem.h"          // Libreria para multiplataforma.
+#include "config.h"                   // Configuraciones del sistema.
 #include "Controllers/MainController.h" // Control del flujo principal.
 #include "Controllers/ConfigurationController.h" // Control del flujo principal.
+#include "Controllers/ConfigurationController.h" // Controlador de configuracion de freelancers.
+#include "Controllers/FreelancerController.h" // Controlador de freelancers.
+#include "Controllers/SchedulerController.h" // Controlador de tiempo de trrabajo.
+#include "Controllers/ReportsController.h" // Controlador de reportes.
 //==============================================================================
 // DECLARACION DEL ESPACIO DE NOMBRES POR DEFECTO
 //------------------------------------------------------------------------------

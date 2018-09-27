@@ -2,22 +2,18 @@
 #define MAINCONTROLLER_H_INCLUDED
 #include <algorithm>
 #include <iostream>
-#include "../CSYSTEM/csystem.h"          // Libreria para multiplataforma.
-#include "../config.h"                   // Configuraciones del sistema.
+
 #include "../Rules/MainRules.h"          // Reglas del main.
+#include "../Interfaces/MainInterface.h" // Interface de
+#include "../Interfaces/ConfigurationInterface.h" // Interface de
+#include "../Interfaces/FreelancerInterface.h" // Interface de
+#include "../Interfaces/ReportsInterface.h" // Interface de
+#include "../Interfaces/SchedulerInterface.h" // Interface de
 
 using namespace std;
 
 namespace Main
 {
-/***********************
-* Prototipos del Main. *
-***********************/
-void index();
-void menu();
-#include "ConfigurationController.h"    // Controlador de configuracion de freelancers.
-#include "FreelancerController.h"       // Controlador de freelancers.
-#include "SchedulerController.h"        // Controlador de tiempo de trrabajo.
 
 void welcome()
 {
@@ -56,9 +52,9 @@ void menu()
     divider(70, true);
     divider(70);
     divider(70, true);
-    buildMenu("1. Configuracion de categorias.", false, sizeOfTitle, "green");
-    buildMenu("2. Configuracion de freelancers.", false, sizeOfTitle, "blue");
-    buildMenu("3. Carga de horas a los freelancers.", false, sizeOfTitle, "magenta");
+    buildMenu("1. AML de Categorias.", false, sizeOfTitle, "green");
+    buildMenu("2. AML de Freelancers.", false, sizeOfTitle, "blue");
+    buildMenu("3. Cargar horas trabajadas.", false, sizeOfTitle, "magenta");
     buildMenu("4. Reportes.", false, sizeOfTitle, "yellow");
     buildMenu("5. Salir.", false, sizeOfTitle, "red");
     divider(70, true);
@@ -92,7 +88,12 @@ void dispatch()
         Scheduler::index();
     }
 
-    if (entry[0] == '4')
+    if (entry[0] == '4') {
+        Reports::menu();
+        Reports::index();
+    }
+
+    if (entry[0] == '5')
         return;
 }
 
