@@ -449,6 +449,21 @@ void addData()
     index();
 }
 
+void positionate(freelancer structure, unsigned int position, unsigned int times = 0)
+{
+    size_t structSize = sizeof(structure);
+
+    if (position == 1) {
+        fseek(file, 0, 2);
+        long sizeOfFile = ftell(file);
+        fseek(file, sizeOfFile - structSize, 0);
+    }
+
+    if (position == 2) {
+        fseek(file, structSize * times, 0);
+    }
+}
+
 void modifyDataByPosition(unsigned int times)
 {
     modifyDataMenu();

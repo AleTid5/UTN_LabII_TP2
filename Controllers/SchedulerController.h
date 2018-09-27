@@ -116,9 +116,9 @@ void modifyData(bool allUsers = true)
             fread(&_freelancer, sizeof(_freelancer), 1, file);
             showFreelancer(_freelancer);
             setWorkedTime(_freelancer);
-            positionate(_freelancer, 2, i);
+            Freelancer::positionate(_freelancer, 2, i);
             fwrite(&_freelancer, sizeof(_freelancer), 1, file);
-            positionate(_freelancer, 2, i + 1);
+            Freelancer::positionate(_freelancer, 2, i + 1);
             successUpdate();
         }
     } else {
@@ -132,7 +132,7 @@ void modifyData(bool allUsers = true)
             if (_freelancer.dni == dni) {
                 showFreelancer(_freelancer, false);
                 setWorkedTime(_freelancer);
-                positionate(_freelancer, 2, i);
+                Freelancer::positionate(_freelancer, 2, i);
                 fwrite(&_freelancer, sizeof(_freelancer), 1, file);
                 founded = ! founded;
                 successUpdate();

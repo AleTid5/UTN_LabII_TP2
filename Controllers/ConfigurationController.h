@@ -1,6 +1,5 @@
 #ifndef CONFIGURATIONCONTROLLER_H_INCLUDED
 #define CONFIGURATIONCONTROLLER_H_INCLUDED
-
 #include "../Rules/MainRules.h"
 
 namespace Configuration
@@ -197,6 +196,21 @@ void setFreelancerAmount(unsigned int &amount, bool money = true)
     }
 
     cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void positionate(configuration structure, unsigned int position, unsigned int times = 0)
+{
+    size_t structSize = sizeof(structure);
+
+    if (position == 1) {
+        fseek(file, 0, 2);
+        long sizeOfFile = ftell(file);
+        fseek(file, sizeOfFile - structSize, 0);
+    }
+
+    if (position == 2) {
+        fseek(file, structSize * times, 0);
+    }
 }
 
 void addData()

@@ -38,21 +38,6 @@ void showErrorFooter()
     cout << "\033[0m";
 }
 
-void positionate(auto structure, unsigned int position, unsigned int times = 0)
-{
-    size_t structSize = sizeof(structure);
-
-    if (position == 1) {
-        fseek(file, 0, 2);
-        long sizeOfFile = ftell(file);
-        fseek(file, sizeOfFile - structSize, 0);
-    }
-
-    if (position == 2) {
-        fseek(file, structSize * times, 0);
-    }
-}
-
 void setCurrentDate() { // Singleton de fecha del dia.
     if (currentDate[0] != '\0')
         return;
@@ -65,7 +50,7 @@ void setCurrentDate() { // Singleton de fecha del dia.
     strcpy(currentDate, buf);
 }
 
-bool strFind(auto haystack, auto needle)
+bool strFind(char25 haystack, char25 needle)
 {
     int haystackLenght = strlen(haystack);
     int needleLenght = strlen(needle);

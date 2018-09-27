@@ -65,6 +65,7 @@
                     // objetos cin, cout y endl.
 #include <iomanip>  // Librería de manipulacion de textos.
 #include <cstdlib>  // Libreria estandar que contiene la funcion exit().
+#include <limits>
 
 //*****************************************************************************
 //                             INCLUSIONES PERSONALES
