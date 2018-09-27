@@ -139,6 +139,19 @@ void showTable()
 void showPaymentWorkReport()
 {
     unsigned int countOfRegisters = countRegisters();
+
+    FILE* configFile = fopen("BIN/configuration.b", "rb");
+    FILE* freelancerFile = fopen("BIN/freelancer.b", "rb");
+
+    if (configFile == NULL || freelancerFile == NULL) {
+        fclose(configFile);
+        fclose(freelancerFile);
+        cout << Text_Center << "\033[1;31mNo se pueden mostrar las estadisticas. Insuficiente informacion.\033[0m";
+        sys::getch();
+        Reports::menu();
+        Reports::index();
+    }
+
     struct WorkedMoney {
         char25 type;
         unsigned int workedTime = 0;
@@ -155,28 +168,25 @@ void showPaymentWorkReport()
     divider(70, true);
     divider(70);
 
-    FILE* configFile = fopen("BIN/configuration.b", "rb");
-    FILE* frelancerFile = fopen("BIN/freelancer.b", "rb");
-
     fseek(configFile, 0, 0);
-    fseek(frelancerFile, 0, 0);
+    fseek(freelancerFile, 0, 0);
 
     for (unsigned int i = 0; i < countOfRegisters; i++) {
         fread(&Configuration::_configuration, sizeof(Configuration::_configuration), 1, configFile);
         strcpy(_workedMoney[i].type, Configuration::_configuration.type);
-        fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, frelancerFile);
-        for (unsigned int j = 0;! feof(frelancerFile); j++) {
+        fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, freelancerFile);
+        for (unsigned int j = 0;! feof(freelancerFile); j++) {
             if (! (bool) strcmp(Freelancer::_freelancer.type, Configuration::_configuration.type)) {
                 _workedMoney[i].workedTime += Freelancer::_freelancer.workedTime;
                 _workedMoney[i].payment += (Freelancer::_freelancer.workedTime * Configuration::_configuration.amount);
             }
-            fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, frelancerFile);
+            fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, freelancerFile);
         }
-        fseek(frelancerFile, 0, 0);
+        fseek(freelancerFile, 0, 0);
     }
 
     fclose(configFile);
-    fclose(frelancerFile);
+    fclose(freelancerFile);
 
     unsigned int totalTime = 0, totalPayment = 0;
 
@@ -204,6 +214,20 @@ void showPaymentWorkReport()
 
     divider(70);
 
+    cout << endl;
+
+    for (unsigned int i = 0; i < countOfRegisters; i++) {
+        float percentage = (float) _workedMoney[i].workedTime * 100 / (float) totalTime;
+        cout << Text_Center << "\033[1;32m";
+        for (int j = 0; j < (((int) percentage) / 2); j++) {
+            cout << "|";
+        }
+        cout << "\033[0m " << percentage << "% es " << _workedMoney[i].type << endl;
+
+    }
+
+    cout << endl;
+
     cout << Text_Center << "Presione Enter para volver al menu de reportes...";
     sys::getch();
 
@@ -215,6 +239,18 @@ void showCategoriesReport()
 {
     unsigned int countOfRegisters = countRegisters();
 
+    FILE* configFile = fopen("BIN/configuration.b", "rb");
+    FILE* freelancerFile = fopen("BIN/freelancer.b", "rb");
+
+    if (configFile == NULL || freelancerFile == NULL) {
+        fclose(configFile);
+        fclose(freelancerFile);
+        cout << Text_Center << "\033[1;31mNo se pueden mostrar las estadisticas. Insuficiente informacion.\033[0m";
+        sys::getch();
+        Reports::menu();
+        Reports::index();
+    }
+
     sys::cls();
     cout << endl;
     divider(105);
@@ -224,11 +260,8 @@ void showCategoriesReport()
     buildMenu(title, true, sizeOfTitle, "yellow", 105);
     divider(105, true);
 
-    FILE* configFile = fopen("BIN/configuration.b", "rb");
-    FILE* frelancerFile = fopen("BIN/freelancer.b", "rb");
-
     fseek(configFile, 0, 0);
-    fseek(frelancerFile, 0, 0);
+    fseek(freelancerFile, 0, 0);
 
     for (unsigned int i = 0; i < countOfRegisters; i++) {
         unsigned int totalTime = 0, totalPayment = 0;
@@ -243,8 +276,8 @@ void showCategoriesReport()
              << " ° " << setw(16) << left << "Horas trabajadas"
              << " ° $" << setw(10) << left << "Sueldo"
              << " °°"  << endl;
-        fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, frelancerFile);
-        for (;! feof(frelancerFile);) {
+        fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, freelancerFile);
+        for (;! feof(freelancerFile);) {
             if (! (bool) strcmp(Freelancer::_freelancer.type, Configuration::_configuration.type)) {
                 cout << Text_Center
                      << "°° "  << setw(10) << left << Freelancer::_freelancer.dni
@@ -256,7 +289,7 @@ void showCategoriesReport()
                 totalTime += Freelancer::_freelancer.workedTime;
                 totalPayment += (Freelancer::_freelancer.workedTime * Configuration::_configuration.amount);
             }
-            fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, frelancerFile);
+            fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, freelancerFile);
         }
         cout << Text_Center
              << "°° \033[1;32m"  << setw(66) << right << "T O T A L E S"
@@ -264,11 +297,11 @@ void showCategoriesReport()
              << " ° $" << setw(10) << left << totalPayment
              << "\033[0m °°"  << endl;
         divider(105, true);
-        fseek(frelancerFile, 0, 0);
+        fseek(freelancerFile, 0, 0);
     }
 
     fclose(configFile);
-    fclose(frelancerFile);
+    fclose(freelancerFile);
 
 
     divider(105);
