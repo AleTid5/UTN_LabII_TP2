@@ -2,7 +2,6 @@
 #define MAINCONTROLLER_H_INCLUDED
 #include <algorithm>
 #include <iostream>
-
 #include "../Rules/MainRules.h"          // Reglas del main.
 #include "../Interfaces/MainInterface.h" // Interface de
 #include "../Interfaces/ConfigurationInterface.h" // Interface de
@@ -38,6 +37,33 @@ void welcome()
     sys::msleep(2);
 
     loading();
+}
+
+void goodbye()
+{
+    sys::cls();
+
+    cout << endl;
+    cout << Text_Center << "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°" << endl;
+    cout << Text_Center << "°°                                                                    °°" << endl;
+    cout << Text_Center << "°°         °°°°°° °°°° °°   °° °°°°°      °°°°°°°°°                   °°" << endl;
+    cout << Text_Center << "°°           °°    °°  °°° °°° °°        °° \\ | / °°                  °°" << endl;
+    cout << Text_Center << "°°           °°    °°  °° ° °° °°°°°     °° _ ° _ °°  Powered by      °°" << endl;
+    cout << Text_Center << "°°           °°    °°  °°   °° °°        °°   °   °°  Magic Software  °°" << endl;
+    cout << Text_Center << "°°           °°   °°°° °°   °° °°°°°     °° / | \\ °°  S. A.           °°" << endl;
+    cout << Text_Center << "°°                                        °°°°°°°°°                   °°" << endl;
+    cout << Text_Center << "°°                                                                    °°" << endl;
+    cout << Text_Center << "°°     °°°°° °°°°° °°  °° °°°°° °°°°°  °°  °° °°     °°°°° °°°°°°     °°" << endl;
+    cout << Text_Center << "°°     °°    °°    °°  °° °°    °° °°° °°  °° °°     °°    °°  °°     °°" << endl;
+    cout << Text_Center << "°°     °°°°° °°    °°°°°° °°°°° °°  °° °°  °° °°     °°°°° °°°°°°     °°" << endl;
+    cout << Text_Center << "°°        °° °°    °°  °° °°    °° °°° °°  °° °°     °°    °° °°      °°" << endl;
+    cout << Text_Center << "°°     °°°°° °°°°° °°  °° °°°°° °°°°°  °°°°°° °°°°°° °°°°° °°  °°     °°" << endl;
+    cout << Text_Center << "°°                                                                    °°" << endl;
+    cout << Text_Center << "°°     G R A C I A S  P O R  U T I L I Z A R  E L  S I S T E M A !    °°" << endl;
+    cout << Text_Center << "°°                                                                    °°" << endl;
+    cout << Text_Center << "°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°" << endl;
+
+    sys::msleep(2);
 }
 
 void menu()
@@ -93,8 +119,10 @@ void dispatch()
         Reports::index();
     }
 
-    if (entry[0] == '5')
+    if (entry[0] == '5') {
+        goodbye();
         return;
+    }
 }
 
 void index()
