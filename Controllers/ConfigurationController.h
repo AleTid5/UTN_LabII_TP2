@@ -31,7 +31,8 @@ void menu()
     buildMenu("1. Agregar categoria de Freelancer.", false, sizeOfTitle, "green");
     buildMenu("2. Modificar categoria de Freelancer.", false, sizeOfTitle, "green");
     buildMenu("3. Ver tabla de categorias de Freelancers.", false, sizeOfTitle, "green");
-    buildMenu("4. Volver.", false, sizeOfTitle, "red");
+    buildMenu("4. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("5. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
 }
@@ -50,9 +51,36 @@ void modifyDataMenu()
     divider(70, true);
     buildMenu("1. Modificar categoria por ID.", false, sizeOfTitle, "green");
     buildMenu("2. Modificar categoria por tipo.", false, sizeOfTitle, "green");
-    buildMenu("3. Volver.", false, sizeOfTitle, "red");
+    buildMenu("3. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("4. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
+}
+
+void showHelp(bool isModify = false) {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+
+    if (! isModify)
+        buildMenu("A Y U D A  D E  C A T E G O R I A S", false, length / 2, "cyan", length);
+    else
+        buildMenu("A Y U D A  D E  M O D I F I C A C I O N", false, length / 2, "cyan", length);
+
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    if (! isModify)
+        buildMenu("Aqui puede crear, editar o ver la lista de categorias.", false, length, "cyan", length);
+    buildMenu("- La edicion la puede realizar el ID de categoria (si lo conoce) o por tipo.", false, length, "cyan", length);
+    buildMenu("- El ID de categoria es un numero autoincremental, vea la tabla para conocerlo.", false, length, "cyan", length);
+    if (! isModify)
+        buildMenu("- Si la consulta devuelve mas de 5 registros, se paginara la consulta.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
 }
 
 void backToMain()
@@ -309,7 +337,7 @@ void modifyData()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(threeOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
         fclose(file);
         retryModify();
     }
@@ -369,6 +397,12 @@ void modifyData()
     }
 
     if (entry[0] == '3') {
+        showHelp(true);
+        modifyDataMenu();
+        modifyData();
+    }
+
+    if (entry[0] == '4') {
         //loading(25, 50);
         menu();
         index();
@@ -389,7 +423,13 @@ void dispatch()
     if (entry[0] == '3')
         showTable();
 
-    if (entry[0] == '4')
+    if (entry[0] == '4') {
+        showHelp();
+        menu();
+        index();
+    }
+
+    if (entry[0] == '5')
         backToMain();
 }
 
@@ -398,7 +438,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fiveOptions)) {
         retry();
     }
 

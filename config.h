@@ -7,6 +7,8 @@ using namespace std;
 typedef char char1[1], char12[12], char25[25];
 const char* threeOptions = "123";
 const char* fourOptions = "1234";
+const char* fiveOptions = "12345";
+const char* sixOptions = "123456";
 unsigned int maxOptionLength = 1;
 unsigned const int maxPagination = 5;
 char1 entry;

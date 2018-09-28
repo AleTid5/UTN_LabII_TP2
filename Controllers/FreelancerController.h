@@ -34,7 +34,8 @@ void menu()
     buildMenu("1. Agregar freelancer.", false, sizeOfTitle, "blue");
     buildMenu("2. Modificar freelancer.", false, sizeOfTitle, "blue");
     buildMenu("3. Ver tabla de freelancers.", false, sizeOfTitle, "blue");
-    buildMenu("4. Volver.", false, sizeOfTitle, "red");
+    buildMenu("4. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("5. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
 }
@@ -54,7 +55,8 @@ void modifyDataMenu()
     buildMenu("1. Modificar Freelancer por DNI.", false, sizeOfTitle, "blue");
     buildMenu("2. Modificar Freelancer por Nombre.", false, sizeOfTitle, "blue");
     buildMenu("3. Modificar Freelancer por Apellido.", false, sizeOfTitle, "blue");
-    buildMenu("4. Volver.", false, sizeOfTitle, "red");
+    buildMenu("4. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("5. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
 }
@@ -73,9 +75,65 @@ void searchFreelancersMenu()
     divider(70, true);
     buildMenu("1. Ver todos los freelancers.", false, sizeOfTitle, "blue");
     buildMenu("2. Buscar freelancer por nombre o apellido.", false, sizeOfTitle, "blue");
-    buildMenu("3. Volver.", false, sizeOfTitle, "red");
+    buildMenu("3. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("4. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
+}
+
+void showHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E  F R E E L A N C E R S", false, length / 2, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("Aqui puede crear, editar o ver la lista de freelancers.", false, length, "cyan", length);
+    buildMenu("- La edicion la puede realizar DNI, nombre o apellido.", false, length, "cyan", length);
+    buildMenu("- Si no conoce el DNI, puede buscarlo en la tabla.", false, length, "cyan", length);
+    buildMenu("- La busqueda la puede realizar por nombre o apellido, o ver todos.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
+}
+
+void showModifyHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E  M O D I F I C A C I O N", false, length / 2, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("Aqui puede editar la lista de freelancers.", false, length, "cyan", length);
+    buildMenu("- La edicion la puede realizar DNI, nombre o apellido.", false, length, "cyan", length);
+    buildMenu("- Si no conoce el DNI, puede buscarlo en la tabla.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
+}
+
+void showSearchHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E  B U S Q U E D A", false, length / 2, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("Aqui puede ver la lista de freelancers.", false, length, "cyan", length);
+    buildMenu("- La busqueda la puede realizar por nombre o apellido, o ver todos.", false, length, "cyan", length);
+    buildMenu("- Si la consulta devuelve mas de 5 registros, se paginara la consulta.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
 }
 
 void backToMain()
@@ -535,7 +593,7 @@ void modifyData()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fiveOptions)) {
         fclose(file);
         retryModify();
     }
@@ -625,6 +683,13 @@ void modifyData()
 
     if (entry[0] == '4') {
         //loading(25, 50);
+        showModifyHelp();
+        modifyDataMenu();
+        modifyData();
+    }
+
+    if (entry[0] == '5') {
+        //loading(25, 50);
         menu();
         index();
     }
@@ -663,7 +728,7 @@ void searchFreelancers()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(threeOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
         fclose(file);
         retrySearch();
     }
@@ -685,6 +750,12 @@ void searchFreelancers()
     }
 
     if (entry[0] == '3') {
+        showSearchHelp();
+        searchFreelancersMenu();
+        searchFreelancers();
+    }
+
+    if (entry[0] == '4') {
         //loading(25, 50);
         menu();
         index();
@@ -706,7 +777,13 @@ void dispatch()
         searchFreelancers();
     }
 
-    if (entry[0] == '4')
+    if (entry[0] == '4') {
+        showHelp();
+        menu();
+        index();
+    }
+
+    if (entry[0] == '5')
         backToMain();
 }
 
@@ -715,7 +792,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fiveOptions)) {
         retry();
     }
 

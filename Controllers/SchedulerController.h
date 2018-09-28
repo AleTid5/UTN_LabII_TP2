@@ -20,9 +20,26 @@ void menu()
     divider(70, true);
     buildMenu("1. Cargar horas a todos los freelancers.", false, sizeOfTitle, "magenta");
     buildMenu("2. Cargar horas a un freelancer.", false, sizeOfTitle, "magenta");
-    buildMenu("3. Volver.", false, sizeOfTitle, "red");
+    buildMenu("3. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("4. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
+}
+
+void showHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E  C A R G A  D E  H O R A S", false, length / 2, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("Aqui puede cargar horas masiva o individualmente.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
 }
 
 void backToMain()
@@ -166,7 +183,13 @@ void dispatch()
     if (entry[0] == '2')
         modifyData(false);
 
-    if (entry[0] == '3')
+    if (entry[0] == '3') {
+        showHelp();
+        menu();
+        index();
+    }
+
+    if (entry[0] == '4')
         backToMain();
 }
 
@@ -175,7 +198,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(threeOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
         retry();
     }
 

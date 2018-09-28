@@ -82,7 +82,8 @@ void menu()
     buildMenu("2. AML de Freelancers.", false, sizeOfTitle, "blue");
     buildMenu("3. Cargar horas trabajadas.", false, sizeOfTitle, "magenta");
     buildMenu("4. Reportes.", false, sizeOfTitle, "yellow");
-    buildMenu("5. Salir.", false, sizeOfTitle, "red");
+    buildMenu("5. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("6. Salir.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
 }
@@ -92,6 +93,25 @@ void retry()
     menu();
     showErrorFooter();
     index();
+}
+
+void showHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E L  M E N U", false, length / 4, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("1. Cree, edite o vea la lista de categorias de freelancers.", false, length, "cyan", length);
+    buildMenu("2. Cree, edite o vea la lista de freelancers.", false, length, "cyan", length);
+    buildMenu("3. Cargue las horas trabajdas de los freelancers (De forma masiva o individual).", false, length, "cyan", length);
+    buildMenu("4. Vea las estadisticas de trabajo en el mes.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
 }
 
 void dispatch()
@@ -109,7 +129,7 @@ void dispatch()
     }
 
     if (entry[0] == '3') {
-         //loading(25, 50);
+        //loading(25, 50);
         Scheduler::menu();
         Scheduler::index();
     }
@@ -120,6 +140,12 @@ void dispatch()
     }
 
     if (entry[0] == '5') {
+        showHelp();
+        menu();
+        index();
+    }
+
+    if (entry[0] == '6') {
         goodbye();
         return;
     }
@@ -132,7 +158,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions))
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(sixOptions))
     {
         retry();
     }

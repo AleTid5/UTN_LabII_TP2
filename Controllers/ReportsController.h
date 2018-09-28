@@ -23,9 +23,26 @@ void menu()
     buildMenu("1. Ver total de horas trabajadas y sueldos a pagar.", false, sizeOfTitle, "yellow");
     buildMenu("2. Ver empleados que facturaron agrupados por tipo.", false, sizeOfTitle, "yellow");
     buildMenu("3. Ver listado de valor precio/hora de cada categorias.", false, sizeOfTitle, "yellow");
-    buildMenu("4. Volver.", false, sizeOfTitle, "red");
+    buildMenu("4. Ayuda.", false, sizeOfTitle, "cyan");
+    buildMenu("5. Volver.", false, sizeOfTitle, "red");
     divider(70, true);
     divider(70);
+}
+
+void showHelp() {
+    sys::cls();
+    int length = 85;
+    divider(length);
+    divider(length, true);
+    buildMenu("A Y U D A  D E  E S T A D I S T I C A S", false, length / 4, "cyan", length);
+    divider(length, true);
+    divider(length);
+    divider(length, true);
+    buildMenu("Aqui puede visualizar las estadisticas mas relevantes del mes.", false, length, "cyan", length);
+    divider(length, true);
+    divider(length);
+    cout << Text_Center << "Presione Enter para volver...";
+    sys::getch();
 }
 
 void backToMain()
@@ -215,14 +232,56 @@ void showPaymentWorkReport()
     divider(70);
 
     cout << endl;
+    divider(70);
+    divider(70, true);
+    const char* title2 = "ESTADISTICA DE HORAS";
+    int sizeOfTitle2 = strlen(title2);
+    buildMenu(title2, true, sizeOfTitle2, "yellow");
+    divider(70, true);
+    divider(70);
+    cout << endl;
 
     for (unsigned int i = 0; i < countOfRegisters; i++) {
-        float percentage = (float) _workedMoney[i].workedTime * 100 / (float) totalTime;
+        float percentage = 0;
+
+        if (totalTime > 0)
+            percentage = (float) _workedMoney[i].workedTime * 100 / (float) totalTime;
+
+        cout << Text_Center << setw(20) << left << _workedMoney[i].type;
+
         cout << Text_Center << "\033[1;32m";
-        for (int j = 0; j < (((int) percentage) / 2); j++) {
-            cout << "|";
+        for (int j = 0; j < (((int) percentage) / 3); j++) {
+            cout << "°";
         }
-        cout << "\033[0m " << percentage << "% es " << _workedMoney[i].type << endl;
+        cout << "\033[0m " << percentage << "%" << endl;
+
+    }
+
+    cout << endl;
+
+    cout << endl;
+    divider(70);
+    divider(70, true);
+    const char* title3 = "ESTADISTICA DE SUELDOS";
+    int sizeOfTitle3 = strlen(title3);
+    buildMenu(title3, true, sizeOfTitle3, "yellow");
+    divider(70, true);
+    divider(70);
+    cout << endl;
+
+    for (unsigned int i = 0; i < countOfRegisters; i++) {
+        float percentage = 0;
+
+        if (totalPayment > 0)
+            percentage = (float) _workedMoney[i].payment * 100 / (float) totalPayment;
+
+        cout << Text_Center << setw(20) << left << _workedMoney[i].type;
+
+        cout << Text_Center << "\033[1;32m";
+        for (int j = 0; j < (((int) percentage) / 3); j++) {
+            cout << "°";
+        }
+        cout << "\033[0m " << percentage << "%" << endl;
 
     }
 
@@ -303,7 +362,6 @@ void showCategoriesReport()
     fclose(configFile);
     fclose(freelancerFile);
 
-
     divider(105);
 
     cout << Text_Center << "Presione Enter para volver al menu de reportes...";
@@ -324,7 +382,13 @@ void dispatch()
     if (entry[0] == '3')
         showTable();
 
-    if (entry[0] == '4')
+    if (entry[0] == '4') {
+        showHelp();
+        menu();
+        index();
+    }
+
+    if (entry[0] == '5')
         backToMain();
 }
 
@@ -340,7 +404,7 @@ void index()
     cout << Text_Center << "Seleccione una opcion para operar: ";
     cin >> entry;
 
-    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fourOptions)) {
+    if (! Rule::validEntry(maxOptionLength) || ! Rule::validEntry(fiveOptions)) {
         retry();
     }
 
