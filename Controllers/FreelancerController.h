@@ -1,11 +1,40 @@
+////#############################################################################
+// ARCHIVO : FreelancerController.h
+// AUTOR : Tidele Alejandro - Acosta Guido
+// FECHA DE CREACION : 03/09/2018.
+// ULTIMA ACTUALIZACION: 28/09/2018.
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// SISTEMA OPERATIVO : Linux (Ubuntu) / Windows XP / Windows 7.
+// IDE : Code::Blocks - 8.02 / 10.05
+// COMPILADOR : GNU GCC Compiler (Linux) / MinGW (Windows).
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// DESCRIPCION:
+// Controlador de las funciones de alta, modificaciones y lista de freelancers.
+//
+/////////////////////////////////////////////////////////////////////////////////
 #ifndef FREELANCERCONTROLLER_H_INCLUDED
 #define FREELANCERCONTROLLER_H_INCLUDED
 
-#include "../Rules/MainRules.h"
+#include "../Rules/MainRules.h" // Reglas principales del sistema
 
 namespace Freelancer
 {
 
+//***************************************************************************
+// DEFINICION DE LAS ESTRUCTURAS
+//===========================================================================
+// ESTRUCTURA : struct freelancer
+// ACCION     : Almacena la informacion de un freelancer.
+// COMPONENTES:
+//              - unsigned int dni: DNI del freelancer (unico).
+//              - char25 name: Nombre del freelancer.
+//              - char25 lastname: Apellido del freelancer.
+//              - char25 type: Tipo de categoria al que pertenece.
+//              - unsigned int workedTime: Horas trabajadas por el freelancer.
+//              - char12 registrationDate: Fecha de creacion del freelancer.
+//              - char12 registrationDate: Fecha de modificacion del freelancer.
 struct freelancer
 {
     unsigned int dni;
@@ -17,8 +46,19 @@ struct freelancer
     char12 modificationDate = "Sin cambios";
 } _freelancer;
 
-int paginatorFrom = 0, paginatorTo = maxPagination;
+//***************************************************************************
+// DEFINICION DE LAS VARIABLES GLOBALES DE FREELANCER
+//===========================================================================
+int paginatorFrom = 0, paginatorTo = maxPagination; //Paginacion desde/hasta.
 
+//***************************************************************************
+// DEFINICION DE LAS FUNCIONES
+//===========================================================================
+// FUNCION   : void menu()
+// ACCION    : Muestra en pantalla el menu principal de Freelancer.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void menu()
 {
     sys::cls();
@@ -40,6 +80,12 @@ void menu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyDataMenu()
+// ACCION    : Muestra en pantalla el menu de modificacion de freelancer.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyDataMenu()
 {
     sys::cls();
@@ -61,6 +107,12 @@ void modifyDataMenu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void searchFreelancersMenu()
+// ACCION    : Muestra en pantalla el menu de busqueda de freelancers.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void searchFreelancersMenu()
 {
     sys::cls();
@@ -81,6 +133,12 @@ void searchFreelancersMenu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp()
+// ACCION    : Muestra una pantalla de ayuda.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showHelp() {
     sys::cls();
     int length = 85;
@@ -100,6 +158,12 @@ void showHelp() {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp()
+// ACCION    : Muestra una pantalla de ayuda de modificacion.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showModifyHelp() {
     sys::cls();
     int length = 85;
@@ -118,6 +182,12 @@ void showModifyHelp() {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp()
+// ACCION    : Muestra una pantalla de ayuda de busqueda.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showSearchHelp() {
     sys::cls();
     int length = 85;
@@ -136,12 +206,24 @@ void showSearchHelp() {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void backToMain()
+// ACCION    : Vuelve al menu principal.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void backToMain()
 {
     Main::menu();
     Main::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : int getMaxPages()
+// ACCION    : Devuelve la cantidad maximas de paginas que tiene el archivo.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Cantidad maxima de paginas.
+//---------------------------------------------------------------------------
 int getMaxPages()
 {
     file = fopen ("Bin/freelancer.b","rb");
@@ -152,6 +234,12 @@ int getMaxPages()
     return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : int getMaxPagesByFilter(char25 filter)
+// ACCION    : Devuelve la cantidad maximas de paginas que tiene el archivo para el filtro ingresado.
+// PARAMETROS: char25 filter: Filtro aplicado en la busqueda.
+// DEVUELVE  : Cantidad maxima de paginas para el filtro.
+//---------------------------------------------------------------------------
 int getMaxPagesByFilter(char25 filter)
 {
     file = fopen ("Bin/freelancer.b","rb");
@@ -167,6 +255,12 @@ int getMaxPagesByFilter(char25 filter)
     return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showTable()
+// ACCION    : Muestra en pantalla la tabla de freelancers.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showTable()
 {
     sys::cls();
@@ -257,6 +351,12 @@ void showTable()
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showTableByFilter(char25 filter)
+// ACCION    : Muestra en pantalla la tabla de freelancers para el filtro ingresado.
+// PARAMETROS: char25 filter: Filtro aplicado en la busqueda.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showTableByFilter(char25 filter)
 {
     sys::cls();
@@ -351,6 +451,12 @@ void showTableByFilter(char25 filter)
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retry()
 {
     menu();
@@ -358,6 +464,12 @@ void retry()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada de la modificacion es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retryModify()
 {
     modifyDataMenu();
@@ -365,6 +477,12 @@ void retryModify()
     modifyData();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada de la busqueda es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retrySearch()
 {
     searchFreelancersMenu();
@@ -372,6 +490,13 @@ void retrySearch()
     searchFreelancers();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
+// ACCION    : Establece el tipo de Freelancer.
+// PARAMETROS: - char25 &nameReal: Nombre a establecer. Se modifica en memoria
+//             - unsigned int minLength: Cantidad minima aceptada de caracteres. Por defecto 3.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
 {
     char name[1000];
@@ -386,6 +511,12 @@ void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
     strcpy(nameReal, name);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : bool typeExists(char type[1000])
+// ACCION    : Verifica que el tipo de freelancer exista.
+// PARAMETROS: - char type[1000]: Tipo de Freelancer a verificar.
+// DEVUELVE  : Si el tipo existe o no.
+//---------------------------------------------------------------------------
 bool typeExists(char type[1000])
 {
     FILE* configFile = fopen ("Bin/configuration.b","rb");
@@ -410,6 +541,13 @@ bool typeExists(char type[1000])
     return typeFounded;
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerType(char25 &typeReal, unsigned int minLength = 3)
+// ACCION    : Establece el tipo de Freelancer.
+// PARAMETROS: - char25 &type: Tipo de categoria a establecer. Se modifica en memoria
+//             - unsigned int minLength: Cantidad minima aceptada de caracteres. Por defecto 3.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFreelancerType(char25 &typeReal, unsigned int minLength = 3)
 {
     char type[1000];
@@ -424,6 +562,12 @@ void setFreelancerType(char25 &typeReal, unsigned int minLength = 3)
     strcpy(typeReal, type);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : bool freelancerExists()
+// ACCION    : Verifica que el freelancer no exista aun.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Si el freelancer existe o no.
+//---------------------------------------------------------------------------
 bool freelancerExists()
 {
     file = fopen ("Bin/freelancer.b","rb");
@@ -448,6 +592,12 @@ bool freelancerExists()
     return freelancerFounded;
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerDNI(unsigned int &dni)
+// ACCION    : Establece el DNI del Freelancer.
+// PARAMETROS: - unsigned int &dni: DNI a establecer. Se modifica en memoria
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFreelancerDNI(unsigned int &dni)
 {
     cin >> dni;
@@ -460,6 +610,12 @@ void setFreelancerDNI(unsigned int &dni)
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerName(char25 &nameReal, unsigned int minLength = 3)
+// ACCION    : Valida el ingreso de un DNI numerico.
+// PARAMETROS: - unsigned int &dni: DNI a verificar. Se modifica en memoria
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void validateDNI(unsigned int &dni)
 {
     cin >> dni;
@@ -474,6 +630,12 @@ void validateDNI(unsigned int &dni)
     cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void addData()
+// ACCION    : Agrega un registro al archivo de freelancers.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void addData()
 {
     cout << Text_Center << "Ingrese el DNI del freelancer: ";
@@ -496,7 +658,7 @@ void addData()
     fclose (file);
 
     cout << Text_Center << "Desea cargar otro freelancer? (S/N) ";
-    cin >> entry;
+    validateEntryTF();
 
     if (entry[0] == 'S' || entry[0] == 's') {
         menu();
@@ -507,6 +669,13 @@ void addData()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void positionate(freelancer structure, unsigned int position, unsigned int times = 0)
+// ACCION    : Posicionamiento dentro de un archivo.
+// PARAMETROS: - freelancer structure: La estructura para posicionar.
+//             - unsigned int position: Determina si se posiciona al final o en un punto en particular.
+//             - unsigned int times: Si es pos. part. es la posicion dentro del archivo.
+// DEVUELVE  : Nada.
 void positionate(freelancer structure, unsigned int position, unsigned int times = 0)
 {
     size_t structSize = sizeof(structure);
@@ -522,6 +691,12 @@ void positionate(freelancer structure, unsigned int position, unsigned int times
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyDataByPosition(unsigned int times)
+// ACCION    : Modifica una posicion en particular del archivo.
+// PARAMETROS: - unsigned int times: Veces que cicló el contador.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyDataByPosition(unsigned int times)
 {
     modifyDataMenu();
@@ -532,12 +707,12 @@ void modifyDataByPosition(unsigned int times)
     cout << Text_Center << "Tipo de Freelancer: " << _freelancer.type << endl;
     cout << Text_Center << "Fecha de creacion: " << _freelancer.registrationDate << endl;
     cout << Text_Center << "Desea modificarlo? (S/N) ";
-    cin >> entry;
+    validateEntryTF();
     cin.ignore(0, '\n');
 
     if (entry[0] == 'S' || entry[0] == 's') {
         cout << Text_Center << "Desea modificar el nombre del freelancer? (S/N) ";
-        cin >> entry;
+        validateEntryTF();
 
         if (entry[0] == 'S' || entry[0] == 's') {
             cin.ignore();
@@ -547,7 +722,7 @@ void modifyDataByPosition(unsigned int times)
         }
 
         cout << Text_Center << "Desea modificar el apellido del freelancer? (S/N) ";
-        cin >> entry;
+        validateEntryTF();
         cin.ignore(0, '\n');
 
         if (entry[0] == 'S' || entry[0] == 's') {
@@ -558,7 +733,7 @@ void modifyDataByPosition(unsigned int times)
         }
 
         cout << Text_Center << "Desea modificar el tipo de freelancer? (S/N) ";
-        cin >> entry;
+        validateEntryTF();
         cin.ignore(0, '\n');
 
         if (entry[0] == 'S' || entry[0] == 's') {
@@ -578,6 +753,12 @@ void modifyDataByPosition(unsigned int times)
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyData()
+// ACCION    : Determina que opcion se va a utilizar para modificar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyData()
 {
     file = fopen ("Bin/freelancer.b","rb");
@@ -696,6 +877,12 @@ void modifyData()
 
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFilter(char25 &filter)
+// ACCION    : Establece el filtro de busqueda.
+// PARAMETROS: - char25 &filter: Filtro a establecer. Se modifica en memoria.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFilter(char25 &filter)
 {
     char filterAux[1000];
@@ -711,6 +898,12 @@ void setFilter(char25 &filter)
     strcpy(filter, filterAux);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void searchFreelancers()
+// ACCION    : Busca freelancers.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void searchFreelancers()
 {
     file = fopen ("Bin/freelancer.b","rb");
@@ -762,6 +955,12 @@ void searchFreelancers()
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void dispatch()
+// ACCION    : Despacha la opcion ingresada por el usuario.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void dispatch()
 {
     if (entry[0] == '1')
@@ -787,6 +986,12 @@ void dispatch()
         backToMain();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void index()
+// ACCION    : Obtiene y valida la opcion que desea ingresar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void index()
 {
     cout << Text_Center << "Seleccione una opcion para operar: ";

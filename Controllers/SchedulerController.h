@@ -1,11 +1,35 @@
+////#############################################################################
+// ARCHIVO : SchedulerController.h
+// AUTOR : Tidele Alejandro - Acosta Guido
+// FECHA DE CREACION : 03/09/2018.
+// ULTIMA ACTUALIZACION: 28/09/2018.
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// SISTEMA OPERATIVO : Linux (Ubuntu) / Windows XP / Windows 7.
+// IDE : Code::Blocks - 8.02 / 10.05
+// COMPILADOR : GNU GCC Compiler (Linux) / MinGW (Windows).
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// DESCRIPCION:
+// Controlador de las funciones de cargas de horas de los freelancers.
+//
+/////////////////////////////////////////////////////////////////////////////////
 #ifndef SCHEDULERCONTROLLER_H_INCLUDED
 #define SCHEDULERCONTROLLER_H_INCLUDED
 
-#include "../Rules/MainRules.h"
+#include "../Rules/MainRules.h" // Reglas principales del sistema
 
 namespace Scheduler
 {
 
+//***************************************************************************
+// DEFINICION DE LAS FUNCIONES
+//===========================================================================
+// FUNCION   : void menu()
+// ACCION    : Muestra en pantalla el menu principal de carga de horas.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void menu()
 {
     sys::cls();
@@ -26,6 +50,12 @@ void menu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp()
+// ACCION    : Muestra una pantalla de ayuda de carga de horas.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showHelp() {
     sys::cls();
     int length = 85;
@@ -42,12 +72,25 @@ void showHelp() {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void backToMain()
+// ACCION    : Vuelve al menu principal.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void backToMain()
 {
     Main::menu();
     Main::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showFreelancer(Freelancer::freelancer _freelancer, bool allFreelancers = true)
+// ACCION    : Muestra al freelancer que se le esta por cargar horas.
+// PARAMETROS: - Freelancer::freelancer _freelancer: Freelancer a mostrar.
+//             - bool allFreelancers: Determina si se modifican todos Freelancers o uno solo.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showFreelancer(Freelancer::freelancer _freelancer, bool allFreelancers = true)
 {
     sys::cls();
@@ -74,6 +117,12 @@ void showFreelancer(Freelancer::freelancer _freelancer, bool allFreelancers = tr
     cout << Text_Center << "\033[0mHoras trabajadas: \033[1;35m";
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setWorkedTime(Freelancer::freelancer &_freelancer)
+// ACCION    : Establece las horas trabajadas.
+// PARAMETROS: - Freelancer::freelancer &_freelancer: Freelancer a modificar.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setWorkedTime(Freelancer::freelancer &_freelancer)
 {
     cin >> _freelancer.workedTime;
@@ -90,6 +139,12 @@ void setWorkedTime(Freelancer::freelancer &_freelancer)
     cout << "\033[0m";
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setDNI(unsigned int &dni)
+// ACCION    : Valida el ingreso numerico del DNI.
+// PARAMETROS: - unsigned int &dni: DNI a buscar.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setDNI(unsigned int &dni)
 {
     cin >> dni;
@@ -104,12 +159,24 @@ void setDNI(unsigned int &dni)
     cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void successUpdate()
+// ACCION    : Muestra un mensaje en pantalla de modificacion satisfactoria.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void successUpdate()
 {
     cout << Text_Center << "\033[1;32mHoras cargadas exitosamente!\033[0m";
     cin.ignore();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyData(bool allUsers = true)
+// ACCION    : Determina que opcion se va a utilizar para cargar horas.
+// PARAMETROS: - bool allUsers: Determina si se modifican todos los freelancers o uno solo.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyData(bool allUsers = true)
 {
     file = fopen ("BIN/freelancer.b", "rb+");
@@ -168,6 +235,12 @@ void modifyData(bool allUsers = true)
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retry()
 {
     menu();
@@ -175,6 +248,12 @@ void retry()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void dispatch()
+// ACCION    : Despacha la opcion ingresada por el usuario.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void dispatch()
 {
     if (entry[0] == '1')
@@ -193,6 +272,12 @@ void dispatch()
         backToMain();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void index()
+// ACCION    : Obtiene y valida la opcion que desea ingresar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void index()
 {
     cout << Text_Center << "Seleccione una opcion para operar: ";

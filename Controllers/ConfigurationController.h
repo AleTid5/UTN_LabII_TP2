@@ -1,10 +1,39 @@
+////#############################################################################
+// ARCHIVO : ConfigurationController.h
+// AUTOR : Tidele Alejandro - Acosta Guido
+// FECHA DE CREACION : 03/09/2018.
+// ULTIMA ACTUALIZACION: 28/09/2018.
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// SISTEMA OPERATIVO : Linux (Ubuntu) / Windows XP / Windows 7.
+// IDE : Code::Blocks - 8.02 / 10.05
+// COMPILADOR : GNU GCC Compiler (Linux) / MinGW (Windows).
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// DESCRIPCION:
+// Controlador de las funciones de configuracion de categorias de los freelancers.
+//
+/////////////////////////////////////////////////////////////////////////////////
 #ifndef CONFIGURATIONCONTROLLER_H_INCLUDED
 #define CONFIGURATIONCONTROLLER_H_INCLUDED
-#include "../Rules/MainRules.h"
+
+#include "../Rules/MainRules.h" // Reglas principales del sistema
 
 namespace Configuration
 {
 
+//***************************************************************************
+// DEFINICION DE LAS ESTRUCTURAS
+//===========================================================================
+// ESTRUCTURA : struct configutation
+// ACCION     : Almacena la configuracion de categorias de freelancers.
+// COMPONENTES:
+//              - unsigned int id: ID autoincremental.
+//              - char25 type: Tipo de categoria.
+//              - unsigned int amount: Monto que percibe la categoria por hora.
+//              - char12 registrationDate: Fecha de creacion de la categoria.
+//              - char12 registrationDate: Fecha de modificacion de la categoria.
+//---------------------------------------------------------------------------
 struct configuration
 {
     unsigned int id;
@@ -14,8 +43,19 @@ struct configuration
     char12 modificationDate = "Sin cambios";
 } _configuration;
 
-int paginatorFrom = 0, paginatorTo = maxPagination;
+//***************************************************************************
+// DEFINICION DE LAS VARIABLES GLOBALES DE CONFIGURACION
+//===========================================================================
+int paginatorFrom = 0, paginatorTo = maxPagination; //Paginacion desde/hasta.
 
+//***************************************************************************
+// DEFINICION DE LAS FUNCIONES
+//===========================================================================
+// FUNCION   : void menu()
+// ACCION    : Muestra en pantalla el menu principal de configuracion.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void menu()
 {
     sys::cls();
@@ -37,6 +77,12 @@ void menu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyDataMenu()
+// ACCION    : Muestra en pantalla el menu de modificacion de categoria.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyDataMenu()
 {
     sys::cls();
@@ -57,6 +103,12 @@ void modifyDataMenu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp(bool isModify)
+// ACCION    : Muestra una pantalla de ayuda.
+// PARAMETROS: bool isModify: Por defecto falso. Determina si es modificacion.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showHelp(bool isModify = false) {
     sys::cls();
     int length = 85;
@@ -83,12 +135,24 @@ void showHelp(bool isModify = false) {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void backToMain()
+// ACCION    : Vuelve al menu principal.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void backToMain()
 {
     Main::menu();
     Main::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : int getMaxPages()
+// ACCION    : Devuelve la cantidad maximas de paginas que tiene el archivo.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Cantidad maxima de paginas.
+//---------------------------------------------------------------------------
 int getMaxPages()
 {
     file = fopen ("Bin/configuration.b","rb");
@@ -99,6 +163,12 @@ int getMaxPages()
     return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showTable()
+// ACCION    : Muestra en pantalla la tabla de configuraciones de freelancers.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showTable()
 {
     sys::cls();
@@ -185,6 +255,12 @@ void showTable()
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retry()
 {
     menu();
@@ -192,6 +268,12 @@ void retry()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retryModify()
+// ACCION    : Si la entrada es incorrecta al modificar, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retryModify()
 {
     modifyDataMenu();
@@ -199,19 +281,36 @@ void retryModify()
     modifyData();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerType(char25 &type, unsigned int minLength = 3)
+// ACCION    : Establece el tipo de Freelancer.
+// PARAMETROS: - char25 &type: Tipo de categoria a establecer. Se modifica en memoria
+//             - unsigned int minLength: Cantidad minima aceptada de caracteres. Por defecto 3.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFreelancerType(char25 &type, unsigned int minLength = 3)
 {
     cin.ignore();
-    cin.getline(type, 25);
+    char typeAux[1000];
+    cin.getline(typeAux, 1000);
 
-    while (! cin.good() || strlen(type) > 25 || strlen(type) < minLength) {
+    while (! cin.good() || strlen(typeAux) > 25 || strlen(typeAux) < minLength)
+    {
         cin.clear();
-        cout << Text_Center << "\033[1;31mIngrese un tipo valido (" << minLength + 1 << " - 25 caracteres): \033[0m";
-        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-        cin.getline(type, 25);
+        cout << Text_Center << "\033[1;31mIngrese un tipo valido (" << minLength << " - 25 caracteres): \033[0m";
+        cin.getline(typeAux, 1000);
     }
+
+    strcpy(type, typeAux);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void setFreelancerAmount(unsigned int &amount, bool money = true
+// ACCION    : Establece el dinero que gana una categoria.
+// PARAMETROS: - unsigned int &amount: Cantidad de dinero. Se modifica en memoria
+//             - bool money: Determina si es dinero o un ID. Por defecto es dinero.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void setFreelancerAmount(unsigned int &amount, bool money = true)
 {
     cin >> amount;
@@ -226,21 +325,35 @@ void setFreelancerAmount(unsigned int &amount, bool money = true)
     cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void positionate(configuration structure, unsigned int position, unsigned int times = 0)
+//---------------------------------------------------------------------------
+// FUNCION   : void positionate(configuration structure, unsigned int position, unsigned int times = 0)
+// ACCION    : Posicionamiento dentro de un archivo.
+// PARAMETROS: - configuration structure: La estructura para posicionar.
+//             - unsigned int position: Determina si se posiciona al final o en un punto en particular.
+//             - unsigned int times: Si es pos. part. es la posicion dentro del archivo.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
+void positionate(configuration structure, unsigned int positionType, unsigned int times = 0)
 {
     size_t structSize = sizeof(structure);
 
-    if (position == 1) {
+    if (positionType == 1) {
         fseek(file, 0, 2);
         long sizeOfFile = ftell(file);
         fseek(file, sizeOfFile - structSize, 0);
     }
 
-    if (position == 2) {
+    if (positionType == 2) {
         fseek(file, structSize * times, 0);
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void addData()
+// ACCION    : Agrega un registro al archivo de configuracion de categorias.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void addData()
 {
     _configuration.id = 1;
@@ -268,7 +381,7 @@ void addData()
     fclose (file);
 
     cout << Text_Center << "Desea cargar otra categoria? (S/N) ";
-    cin >> entry;
+    validateEntryTF();
 
     if (entry[0] == 'S' || entry[0] == 's') {
         menu();
@@ -279,6 +392,12 @@ void addData()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyDataByPosition(unsigned int times)
+// ACCION    : Modifica una posicion en particular del archivo.
+// PARAMETROS: - unsigned int times: Veces que cicló el contador.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyDataByPosition(unsigned int times)
 {
     modifyDataMenu();
@@ -288,12 +407,12 @@ void modifyDataByPosition(unsigned int times)
     cout << Text_Center << "Monto que percibe: $" << _configuration.amount << endl;
     cout << Text_Center << "Fecha de creacion: " << _configuration.registrationDate << endl;
     cout << Text_Center << "Desea modificarlo? (S/N) ";
-    cin >> entry;
+    validateEntryTF();
     cin.ignore(0, '\n');
 
     if (entry[0] == 'S' || entry[0] == 's') {
         cout << Text_Center << "Desea modificar el tipo de freelancer? (S/N) ";
-        cin >> entry;
+        validateEntryTF();
         cin.ignore(0, '\n');
 
         if (entry[0] == 'S' || entry[0] == 's') {
@@ -303,7 +422,7 @@ void modifyDataByPosition(unsigned int times)
         }
 
         cout << Text_Center << "Desea modificar el monto que va a ganar? (S/N) ";
-        cin >> entry;
+        validateEntryTF();
         cin.ignore(0, '\n');
 
         if (entry[0] == 'S' || entry[0] == 's') {
@@ -322,6 +441,12 @@ void modifyDataByPosition(unsigned int times)
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void modifyData()
+// ACCION    : Determina que opcion se va a utilizar para modificar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void modifyData()
 {
     file = fopen ("Bin/configuration.b","rb");
@@ -410,6 +535,12 @@ void modifyData()
 
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void dispatch()
+// ACCION    : Despacha la opcion ingresada por el usuario.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void dispatch()
 {
     if (entry[0] == '1')
@@ -433,6 +564,12 @@ void dispatch()
         backToMain();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void index()
+// ACCION    : Obtiene y valida la opcion que desea ingresar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void index()
 {
     cout << Text_Center << "Seleccione una opcion para operar: ";

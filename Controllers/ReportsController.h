@@ -1,13 +1,39 @@
+////#############################################################################
+// ARCHIVO : ReportsController.h
+// AUTOR : Tidele Alejandro - Acosta Guido
+// FECHA DE CREACION : 03/09/2018.
+// ULTIMA ACTUALIZACION: 28/09/2018.
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// SISTEMA OPERATIVO : Linux (Ubuntu) / Windows XP / Windows 7.
+// IDE : Code::Blocks - 8.02 / 10.05
+// COMPILADOR : GNU GCC Compiler (Linux) / MinGW (Windows).
+// LICENCIA : GPL (General Public License) - Version 3.
+//=============================================================================
+// DESCRIPCION:
+// Controlador de las funciones de reportes.
+//
+/////////////////////////////////////////////////////////////////////////////////
 #ifndef REPORTSCONTROLLER_H_INCLUDED
 #define REPORTSCONTROLLER_H_INCLUDED
 
-#include "../Rules/MainRules.h"
+#include "../Rules/MainRules.h" // Reglas principales del sistema
 
 namespace Reports
 {
+//***************************************************************************
+// DEFINICION DE LAS VARIABLES GLOBALES DE REPORTES
+//===========================================================================
+int paginatorFrom = 0, paginatorTo = maxPagination; //Paginacion desde/hasta.
 
-int paginatorFrom = 0, paginatorTo = maxPagination;
-
+//***************************************************************************
+// DEFINICION DE LAS FUNCIONES
+//===========================================================================
+// FUNCION   : void menu()
+// ACCION    : Muestra en pantalla el menu principal de reportes.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void menu()
 {
     sys::cls();
@@ -29,6 +55,12 @@ void menu()
     divider(70);
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showHelp()
+// ACCION    : Muestra una pantalla de ayuda de reportes.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showHelp() {
     sys::cls();
     int length = 85;
@@ -45,12 +77,24 @@ void showHelp() {
     sys::getch();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void backToMain()
+// ACCION    : Vuelve al menu principal.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void backToMain()
 {
     Main::menu();
     Main::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : unsigned int countRegisters()
+// ACCION    : Devuelve la cantidad de registros del archivo.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Un entero natural.
+//---------------------------------------------------------------------------
 unsigned int countRegisters()
 {
     file = fopen ("Bin/configuration.b","rb");
@@ -61,12 +105,24 @@ unsigned int countRegisters()
     return sizeOfRegisters;
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : int getMaxPages()
+// ACCION    : Devuelve la cantidad maximas de paginas que tiene el archivo.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Cantidad maxima de paginas.
+//---------------------------------------------------------------------------
 int getMaxPages()
 {
     unsigned int sizeOfRegisters = countRegisters();
     return (! (bool)(sizeOfRegisters % maxPagination) ? (sizeOfRegisters / maxPagination) : ((sizeOfRegisters / maxPagination) + 1));
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showTable()
+// ACCION    : Muestra en pantalla la tabla de configuraciones de categorias.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showTable()
 {
     sys::cls();
@@ -153,6 +209,12 @@ void showTable()
     }
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showPaymentWorkReport()
+// ACCION    : Muestra en pantalla el reporte de horas trabajadas por categoria.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showPaymentWorkReport()
 {
     unsigned int countOfRegisters = countRegisters();
@@ -294,6 +356,12 @@ void showPaymentWorkReport()
     Reports::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void showCategoriesReport()
+// ACCION    : Muestra en pantalla el reporte de horas trabajadas discriminada por freelancer.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void showCategoriesReport()
 {
     unsigned int countOfRegisters = countRegisters();
@@ -337,7 +405,7 @@ void showCategoriesReport()
              << " °°"  << endl;
         fread(&Freelancer::_freelancer, sizeof(Freelancer::_freelancer), 1, freelancerFile);
         for (;! feof(freelancerFile);) {
-            if (! (bool) strcmp(Freelancer::_freelancer.type, Configuration::_configuration.type)) {
+            if (! (bool) strcmp(Freelancer::_freelancer.type, Configuration::_configuration.type) && Freelancer::_freelancer.workedTime > 0) {
                 cout << Text_Center
                      << "°° "  << setw(10) << left << Freelancer::_freelancer.dni
                      << " ° " << setw(25) << left << Freelancer::_freelancer.name
@@ -371,6 +439,12 @@ void showCategoriesReport()
     Reports::index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void dispatch()
+// ACCION    : Despacha la opcion ingresada por el usuario.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void dispatch()
 {
     if (entry[0] == '1')
@@ -392,6 +466,12 @@ void dispatch()
         backToMain();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void retry()
+// ACCION    : Si la entrada es incorrecta, vuelve a intentar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void retry()
 {
     menu();
@@ -399,6 +479,12 @@ void retry()
     index();
 }
 
+//---------------------------------------------------------------------------
+// FUNCION   : void index()
+// ACCION    : Obtiene y valida la opcion que desea ingresar.
+// PARAMETROS: Ninguno.
+// DEVUELVE  : Nada.
+//---------------------------------------------------------------------------
 void index()
 {
     cout << Text_Center << "Seleccione una opcion para operar: ";

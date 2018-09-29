@@ -1,9 +1,9 @@
 //#############################################################################
-// ARCHIVO             : nombre de archivo.extension
-// AUTOR/ES            : nombre/s de autor/es
+// ARCHIVO             : main.cpp
+// AUTOR/ES            : Tidele Alejandro - Acosta Guido
 // VERSION             : 0.01 beta.
-// FECHA DE CREACION   : dd/mm/aaaa.
-// ULTIMA ACTUALIZACION: dd/mm/aaaa.
+// FECHA DE CREACION   : 03/09/2018.
+// ULTIMA ACTUALIZACION: 28/09/2018.
 // LICENCIA            : GPL (General Public License) - Version 3.
 //
 //  **************************************************************************
@@ -26,13 +26,13 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, EE.UU.
 
 //=============================================================================
-// SISTEMA OPERATIVO   : Linux (Ubuntu) / Windows XP / Windows 7.
+// SISTEMA OPERATIVO   : Linux (Ubuntu) / Windows XP / Windows 7 / Windows 10.
 // IDE                 : Code::Blocks - 8.02 / 10.05
 // COMPILADOR          : GNU GCC Compiler (Linux) / MinGW (Windows).
 // LICENCIA            : GPL (General Public License) - Version 3.
 //=============================================================================
 // DESCRIPCION:
-//              Breve explicacion sobre el contenido del archivo.
+//              Funciones del flujo principal.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +65,7 @@
                     // objetos cin, cout y endl.
 #include <iomanip>  // Librería de manipulacion de textos.
 #include <cstdlib>  // Libreria estandar que contiene la funcion exit().
-#include <limits>
+#include <limits>   // Libreria de manejo de limites numericos.
 
 //*****************************************************************************
 //                             INCLUSIONES PERSONALES
@@ -76,7 +76,7 @@
 #include "Controllers/ConfigurationController.h" // Control del flujo principal.
 #include "Controllers/ConfigurationController.h" // Controlador de configuracion de freelancers.
 #include "Controllers/FreelancerController.h" // Controlador de freelancers.
-#include "Controllers/SchedulerController.h" // Controlador de tiempo de trrabajo.
+#include "Controllers/SchedulerController.h" // Controlador de tiempo de trabajo.
 #include "Controllers/ReportsController.h" // Controlador de reportes.
 //==============================================================================
 // DECLARACION DEL ESPACIO DE NOMBRES POR DEFECTO
@@ -88,7 +88,7 @@ using namespace std;
 //------------------------------------------------------------------------------
 int main()
 {
-    //Main::welcome();
+    Main::welcome();
     Main::menu();
     Main::index();
     //--------------------------------------------------------------------------
